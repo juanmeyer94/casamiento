@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Playfair_Display, Cormorant_Garamond } from 'next/font/google';
-import { Music, Pause } from 'lucide-react';
+import {
+  Playfair_Display as playfairDisplay,
+  Cormorant_Garamond as cormorantGaramond,
+} from "next/font/google";
+import { Music, Pause } from "lucide-react";
 import Image from "next/image";
 
-const playfair = Playfair_Display({ subsets: ["latin"] });
-const cormorant = Cormorant_Garamond({
+const playfair = playfairDisplay({ subsets: ["latin"] });
+const cormorant = cormorantGaramond({
   subsets: ["latin"],
   weight: ["400", "500"],
 });
@@ -58,7 +61,9 @@ export default function Intro() {
         </div>
       </div>
       <div className="min-h-[50vh] flex flex-col items-center justify-start px-4 pt-12 pb-24 relative">
-        <p className="text-[#C4A494] text-xl mb-8 tracking-widest">15.05.2021</p>
+        <p className="text-[#C4A494] text-xl mb-8 tracking-widest">
+          15.05.2021
+        </p>
 
         <div className={`${playfair.className} relative`}>
           <div className="absolute -inset-4 bg-[#F5E6E0] rounded-full -rotate-12 opacity-50" />
@@ -96,4 +101,3 @@ export default function Intro() {
     </div>
   );
 }
-

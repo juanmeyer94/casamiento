@@ -1,9 +1,9 @@
-import Intro from "@/components/Modulos/Intro";
+import Intro from "../../components/Modulos/Intro";
 
-export default function Home () {
-    return (
-        <div>
-            <Intro />
-        </div>
-    )
+export default function Home() {
+  return (
+    <div>
+      <Intro />
+    </div>
+  );
 }
