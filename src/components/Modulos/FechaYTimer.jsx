@@ -1,21 +1,28 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Playfair_Display } from 'next/font/google'
-import Image from 'next/image'
-import { Heart } from 'lucide-react'
-import Countdown from 'react-countdown'
+import { useState, useEffect } from "react";
+// eslint-disable-next-line camelcase
+import { Playfair_Display as PlayfairDisplay } from "next/font/google";
+import Image from "next/image";
+import { Heart } from "lucide-react";
+import Countdown from "react-countdown";
 
-const playfair = Playfair_Display({ subsets: ['latin'] })
+const playfair = PlayfairDisplay({ subsets: ["latin"] });
 
 export default function Timer() {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+  const renderer = ({
+    days,
+    hours,
+    minutes,
+    seconds,
+    completed,
+  }) => {
     if (completed) {
       return (
         <div className="text-center">
@@ -27,10 +34,12 @@ export default function Timer() {
         </div>
       );
     }
-  
+
     return (
       <div className="relative w-full max-w-[280px] sm:max-w-[400px] aspect-square bg-white rounded-full shadow-lg flex flex-col items-center justify-center p-4 md:p-6">
-        <h2 className={`${playfair.className} text-[#C4A494] text-lg sm:text-xl mb-2 sm:mb-4 text-center`}>
+        <h2
+          className={`${playfair.className} text-[#C4A494] text-lg sm:text-xl mb-2 sm:mb-4 text-center`}
+        >
           ¡Estamos contando!
         </h2>
         <div className="flex items-center justify-center gap-2 sm:gap-4 text-center">
@@ -66,14 +75,13 @@ export default function Timer() {
       </div>
     );
   };
-  
 
-  if (!mounted) return null
+  if (!mounted) return null;
 
   return (
     <div className="relative w-full max-w-[600px] aspect-square mx-auto flex items-center justify-center p-4">
       <div className="z-20 relative">
-        <Countdown date={new Date('2025-07-01T00:00:00')} renderer={renderer} />
+        <Countdown date={new Date("2025-07-01T00:00:00")} renderer={renderer} />
       </div>
       <Image
         src="/timer5.png"
@@ -84,6 +92,5 @@ export default function Timer() {
         priority
       />
     </div>
-  )
+  );
 }
-
