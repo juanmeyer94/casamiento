@@ -1,9 +1,13 @@
+import Timer from "../../components/Modulos/FechaYTimer";
 import Intro from "../../components/Modulos/Intro";
 
 export default function Home() {
   return (
-    <div>
-      <Intro />
+    <div className="min-h-screen relative bg-pink-50 flex flex-col items-center">
+      <div className="w-full max-w-2xl mx-auto">
+        <Intro />
+        <Timer />
+      </div>
     </div>
   );
 }
