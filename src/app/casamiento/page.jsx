@@ -1,3 +1,4 @@
+import GeneralInfo from "../../components/Modulos/LugarYHorarios";
 import Timer from "../../components/Modulos/FechaYTimer";
 import Intro from "../../components/Modulos/Intro";
 
@@ -7,6 +8,7 @@ export default function Home() {
       <div className="w-full max-w-2xl mx-auto">
         <Intro />
         <Timer />
+        <GeneralInfo />
       </div>
     </div>
   );

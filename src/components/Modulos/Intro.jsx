@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Playfair_Display as PlayfairDisplay, Cormorant_Garamond as CormorantGaramond } from "next/font/google";
+import {
+  Playfair_Display as PlayfairDisplay,
+  Cormorant_Garamond as CormorantGaramond,
+} from "next/font/google";
 import { Music, Pause } from "lucide-react";
 import Image from "next/image";
 
@@ -41,12 +44,20 @@ export default function Intro() {
           </div>
         </div>
       </div>
-      <div className="min-h-[50vh] flex flex-col items-center justify-start px-4 pt-12 pb-24 relative max-w-4xl mx-auto">
+      <div className="min-h-[50vh] flex flex-col items-center justify-start px-4 py-6 relative max-w-4xl mx-auto">
         <p className="text-[#C4A494] text-xl mb-8 tracking-widest border-y-2">
           15.05.2021
         </p>
         <div className={`${playfair.className} relative`}>
-          <div className="absolute -inset-4 bg-[#f0cfc2] rounded-full -rotate-12 opacity-50" />
+          <div className="absolute -inset-4">
+            <Image
+              src="/fondo.png"
+              alt="Fondo decorativo"
+              fill
+              className="object-cover rounded-full -rotate-12"
+              priority
+            />
+          </div>
           <h1 className="text-4xl md:text-6xl lg:text-7xl text-[#8B6F6F] tracking-wide relative">
             IVAN
             <span className="inline-block mx-2">&</span>
