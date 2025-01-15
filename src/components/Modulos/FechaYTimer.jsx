@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// eslint-disable-next-line camelcase
 import { Playfair_Display as PlayfairDisplay } from "next/font/google";
 import Image from "next/image";
 import { Heart } from "lucide-react";
@@ -36,34 +35,34 @@ export default function Timer() {
     }
 
     return (
-      <div className="relative w-full max-w-[280px] sm:max-w-[400px] aspect-square bg-white rounded-full shadow-lg flex flex-col items-center justify-center p-4 md:p-6">
+      <div className="relative w-full max-w-[280px] sm:max-w-[400px] aspect-square bg-white rounded-full shadow-lg flex flex-col items-center justify-center p-2 md:p-6">
         <h2
           className={`${playfair.className} text-[#C4A494] text-lg sm:text-xl mb-2 sm:mb-4 text-center`}
         >
           ¡Estamos contando!
         </h2>
-        <div className="flex items-center justify-center gap-2 sm:gap-4 text-center">
+        <div className="flex items-center justify-center gap-1 sm:gap-4 text-center">
           <div>
             <div className="text-[#8B6F6F] text-lg sm:text-xl font-bold">
               {String(days).padStart(2, "0")}
             </div>
             <div className="text-[#C4A494] text-xs sm:text-sm">días</div>
           </div>
-          <div className="h-10 border-l-2 border-[#C4A494] hidden sm:block" />
+          <div className="h-10 border-l-2 border-[#C4A494]" />
           <div>
             <div className="text-[#8B6F6F] text-lg sm:text-xl font-bold">
               {String(hours).padStart(2, "0")}
             </div>
             <div className="text-[#C4A494] text-xs sm:text-sm">horas</div>
           </div>
-          <div className="h-10 border-l-2 border-[#C4A494] hidden sm:block" />
+          <div className="h-10 border-l-2 border-[#C4A494] " />
           <div>
             <div className="text-[#8B6F6F] text-lg sm:text-xl font-bold">
               {String(minutes).padStart(2, "0")}
             </div>
             <div className="text-[#C4A494] text-xs sm:text-sm">minutos</div>
           </div>
-          <div className="h-10 border-l-2 border-[#C4A494] hidden sm:block" />
+          <div className="h-10 border-l-2 border-[#C4A494] " />
           <div>
             <div className="text-[#8B6F6F] text-lg sm:text-xl font-bold">
               {String(seconds).padStart(2, "0")}
