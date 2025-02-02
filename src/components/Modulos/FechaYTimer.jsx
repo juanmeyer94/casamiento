@@ -80,7 +80,7 @@ export default function Timer() {
   return (
     <div className="relative w-full max-w-[600px] aspect-square mx-auto flex items-center justify-center p-4">
       <div className="z-20 relative">
-        <Countdown date={new Date("2025-07-01T00:00:00")} renderer={renderer} />
+        <Countdown date={new Date("2025-11-08T20:00:00")} renderer={renderer} />
       </div>
       <Image
         src="/timer5.png"
