@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { FolderIcon as ClothesHanger } from "lucide-react";
 
+
 export default function DressTips() {
   const [isOpen, setIsOpen] = useState(false);
 

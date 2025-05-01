@@ -60,7 +60,6 @@ export default function Tips() {
               <ClipboardCheck className="w-10 h-10 text-[#C4A494]" />
             </div>
             <h3 className="text-[#8B6F6F] text-xl mt-8 mb-4">Tips y Notas</h3>
-
             <div className="space-y-4 text-[#8B6F67]">
               <h3 className="font-medium">Ubicación:</h3>
               <p>El lugar cuenta con estacionamiento gratuito.</p>
