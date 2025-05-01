@@ -11,13 +11,12 @@ import DressTips from "../../components/Modulos/DressTips";
 import Tips from "../../components/Modulos/Tips";
 import { SessionProvider } from "next-auth/react";
 
+
 export default function Home() {
   return (
     <div className="min-h-screen relative bg-pink-50 flex flex-col items-center">
       <div className="w-full max-w-2xl mx-auto">
         <SessionProvider >
-
-       
         <Intro />
         <Timer />
         <GeneralInfo />
