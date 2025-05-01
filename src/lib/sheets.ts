@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 
-export default async function appendToSheet({
+export async function appendToSheet({
   name,
   email,
   attending,
