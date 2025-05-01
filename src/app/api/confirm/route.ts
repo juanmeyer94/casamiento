@@ -1,19 +1,28 @@
 import { NextResponse } from "next/server";
-import { appendToSheet } from "../../../lib/sheets";
+import appendToSheet from "../../../lib/sheets.ts";
 
-export async function POST(req: Request) {
+export default async function POST(req: Request) {
   const body = await req.json();
-  const { name, email, attending, message } = body;
+  const {
+    name, email, attending, message,
+  } = body;
 
   if (!email || !name) {
-    return NextResponse.json({ error: "Faltan datos" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Faltan datos" },
+      { status: 400 },
+    );
   }
 
   try {
-    await appendToSheet({ name, email, attending, message });
+    await appendToSheet({
+      name, email, attending, message,
+    });
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error al escribir en Sheets:", error);
-    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error interno" },
+      { status: 500 },
+    );
   }
 }

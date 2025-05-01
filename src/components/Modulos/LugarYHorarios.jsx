@@ -8,10 +8,8 @@ import { MapPin } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useSession, signIn } from "next-auth/react";
-import Modal from "../Modal";
 import Swal from "sweetalert2";
-
-
+import Modal from "../Modal";
 
 const playfair = PlayfairDisplay({ subsets: ["latin"] });
 const cormorant = CormorantGaramond({
@@ -30,12 +28,16 @@ export default function GeneralInfo() {
 
   const agendarCelebracion = () => {
     const title = encodeURIComponent("Casamiento de Mica y Ivan");
-    const details = encodeURIComponent("¡Acompañanos a celebrar este día tan especial!");
-    const location = encodeURIComponent("Establecimiento Las Marías, Rafaela, Santa Fe");
+    const details = encodeURIComponent(
+      "¡Acompañanos a celebrar este día tan especial!",
+    );
+    const location = encodeURIComponent(
+      "Establecimiento Las Marías, Rafaela, Santa Fe",
+    );
     const startDate = "20251108T230000Z";
-    const endDate = "20251109T030000Z"; 
-    const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${startDate}/${endDate}`;
-  
+    const endDate = "20251109T030000Z";
+    const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}`
+    + `&details=${details}&location=${location}&dates=${startDate}/${endDate}`;
     window.open(calendarUrl, "_blank");
   };
 
@@ -45,6 +47,7 @@ export default function GeneralInfo() {
     }
     setOpen(!open);
     setConfirmed(!confirmed);
+    return null;
   };
 
   const handleConfirm = async () => {
@@ -59,7 +62,7 @@ export default function GeneralInfo() {
         Swal.showLoading();
       },
     });
-  
+
     const response = await fetch("/api/confirm", {
       method: "POST",
       headers: {
@@ -72,7 +75,7 @@ export default function GeneralInfo() {
         message,
       }),
     });
-  
+
     if (response.ok) {
       Swal.fire({
         icon: "success",
@@ -87,124 +90,11 @@ export default function GeneralInfo() {
         title: "Error",
         text: "Hubo un problema al confirmar tu asistencia. Por favor, intenta nuevamente.",
       });
-      console.error("Error al enviar la información a Google Sheets.");
     }
   };
 
-
   return (
     <div className="w-full max-w-md mx-auto px-4 py-24">
-      {/* Divisorio inicial */}
-      {/* <div className="relative h-32 mb-12">
-        <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2">
-          <Image
-            src="/lineaconcorazon.png"
-            alt="Divisor decorativo"
-            width={1000}
-            height={50}
-            className="w-full object-cover opacity-50"
-            priority
-          />
-        </div>
-        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="w-44 h-44 bg-white rounded-full shadow-md flex items-center justify-center p-2">
-            <div className="relative w-32 h-32">
-              <Image
-                src="/anillosbodas2.png"
-                alt="Novios ilustración"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </div> */}
-
-      {/* Ceremonia */}
-      {/* <div className="relative flex justify-center mb-12">
-        <div className="relative bg-transparent px-24 py-2 rounded-sm transform -skew-x-12 overflow-hidden">
-          <Image
-            src="/fondo2.png"
-            alt="Fondo decorativo"
-            fill
-            className="object-cover"
-            priority
-          />
-          <h1
-            className={`${playfair.className} text-[#8B6F6F] text-3xl transform skew-x-12 relative z-10`}
-          >
-            Ceremonia
-          </h1>
-        </div>
-      </div> */}
-
-      {/* Información de la ceremonia */}
-      {/* <div className="space-y-8 text-center mb-24">
-        <div>
-          <h2
-            className={`${cormorant.className} text-[#8B6F6F] text-2xl font-semibold mb-2`}
-          >
-            DÍA
-          </h2>
-          <p
-            className={`${cormorant.className} text-[#C4A494] text-xl font-semimedium`}
-          >
-            Sábado 15 de Mayo - 17hs
-          </p>
-          <button
-            onClick={agendarCeremonia}
-            className="mt-4 bg-[#E5A19A] hover:bg-[#d8958e] text-white rounded-full px-16 py-2 font-bold"
-            type="button"
-          >
-            Agendar
-          </button>
-        </div>
-
-        <div>
-          <h2
-            className={`${cormorant.className} text-[#8B6F6F] text-2xl font-semibold mb-2`}
-          >
-            LUGAR
-          </h2>
-          <p
-            className={`${cormorant.className} text-[#C4A494] text-xl font-medium`}
-          >
-            Catedral Rafaela
-          </p>
-          <button
-            onClick={handleModal}
-            className="mt-4 bg-[#E5A19A] hover:bg-[#d8958e] text-white rounded-full px-6 py-2 font-bold"
-            type="button"
-          >
-            Confirmar asistencia
-          </button>
-        </div>
-
-        <div>
-          <h2
-            className={`${cormorant.className} text-[#8B6F6F] text-2xl font-semibold mb-2`}
-          >
-            DIRECCIÓN
-          </h2>
-          <p
-            className={`${cormorant.className} text-[#C4A494] text-xl font-medium`}
-          >
-            Belgrano 20 - Rafaela, Santa Fe
-          </p>
-          <button
-            className="mt-4 bg-[#E5A19A] hover:bg-[#d8958e] text-white rounded-full px-10 py-2"
-            type="button"
-            onClick={() => setIsMapModalOpen(true)}
-          >
-            <div className="flex items-center justify-center gap-2 font-bold">
-              <MapPin size={18} />
-              Cómo llegar
-            </div>
-          </button>
-        </div>
-      </div> */}
-
       {/* Divisorio de celebración */}
       <div className="relative h-32 mb-12">
         <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2">
@@ -370,40 +260,49 @@ export default function GeneralInfo() {
           </div>
         </div>
       )}
-         <Modal open={open} onClose={() => setOpen(false)}>
-      <h2 className="text-xl font-semibold mb-2">Confirmar asistencia</h2>
-      <p className="mb-4">Hola <strong>{session ? session.user.name : null}</strong>, ¿vas a venir?</p>
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <h2 className="text-xl font-semibold mb-2">Confirmar asistencia</h2>
+        <p>
+          Hola
+          <strong>{session ? session.user.name : null}</strong>
+          , ¿vas a venir?
+        </p>
 
-      <div className="mb-3">
-        <label className="block text-sm font-medium">¿Vas a venir?</label>
-        <select
-          value={attending}
-          onChange={(e) => setAttending(e.target.value)}
-          className="w-full border rounded p-2"
+        <div className="mb-3">
+          <label className="block text-sm font-medium" htmlFor="attending">¿Vas a venir?</label>
+          <select
+            id="attending"
+            value={attending}
+            onChange={(e) => setAttending(e.target.value)}
+            className="w-full border rounded p-2"
+          >
+            <option>Sí</option>
+            <option>No</option>
+          </select>
+        </div>
+
+        <div className="mb-3">
+          <label className="block text-sm font-medium" htmlFor="message">
+            Mensaje o aclaración
+          </label>
+          <input
+            id="message"
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className="w-full border rounded p-2"
+            placeholder="Puedo llevar algo, vengo con mi pareja, etc."
+          />
+        </div>
+
+        <button
+          onClick={handleConfirm}
+          className="bg-green-600 text-white px-4 py-2 rounded mt-2"
+          type="button"
         >
-          <option>Sí</option>
-          <option>No</option>
-        </select>
-      </div>
-
-      <div className="mb-3">
-        <label className="block text-sm font-medium">Mensaje o aclaración</label>
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="w-full border rounded p-2"
-          placeholder="Puedo llevar algo, vengo con mi pareja, etc."
-        />
-      </div>
-
-      <button
-        onClick={handleConfirm}
-        className="bg-green-600 text-white px-4 py-2 rounded mt-2"
-      >
-        Confirmar
-      </button>
-    </Modal>
+          Confirmar
+        </button>
+      </Modal>
     </div>
   );
 }

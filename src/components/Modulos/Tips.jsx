@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ClipboardCheck, X } from "lucide-react";
+import { ClipboardCheck } from "lucide-react";
 import Image from "next/image";
 
 export default function Tips() {
@@ -39,7 +39,14 @@ export default function Tips() {
       {isOpen && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-red-200/50 backdrop-blur-sm z-50"
+          role="button"
+          tabIndex="0"
           onClick={() => setIsOpen(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setIsOpen(false);
+            }
+          }}
         >
           <div className="relative bg-white p-6 rounded-lg w-80 text-center shadow-lg">
             <Image

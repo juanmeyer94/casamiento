@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { X, FolderIcon as ClothesHanger } from "lucide-react";
+import { FolderIcon as ClothesHanger } from "lucide-react";
 
 export default function DressTips() {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,8 +38,16 @@ export default function DressTips() {
 
       {/* Modal */}
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-red-200/50 backdrop-blur-sm z-50"
-        onClick={() => setIsOpen(false)}
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-red-200/50 backdrop-blur-sm z-50"
+          role="button"
+          tabIndex="0"
+          onClick={() => setIsOpen(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setIsOpen(false);
+            }
+          }}
         >
           <div className="relative bg-white p-6 rounded-lg w-80 text-center shadow-lg">
             <Image
@@ -64,7 +72,7 @@ export default function DressTips() {
               <p>Traje oscuro o claro con corbata. Evitar smoking.</p>
             </div>
             <button
-               onClick={() => setIsOpen(false)}
+              onClick={() => setIsOpen(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
               type="button"
             >
@@ -75,8 +83,4 @@ export default function DressTips() {
       )}
     </div>
   );
-}
-
-{
-  /*  */
 }

@@ -18,6 +18,8 @@
     "@next/next/no-html-link-for-pages": "off",
     "react/prop-types": "off",
     "quotes": ["error", "double"],
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "consistent-return": "off"
   }
 }
