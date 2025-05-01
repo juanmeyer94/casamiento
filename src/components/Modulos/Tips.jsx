@@ -37,21 +37,22 @@ export default function Tips() {
 
       {/* Modal */}
       {isOpen && (
-        <div className="fixed inset-0 bg-red-200 bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-md w-full p-6 relative border-[#E8D8D0] border">
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
-              type="button"
-            >
-              <X className="w-6 h-6" />
-            </button>
-
-            <div className="mb-6">
-              <h3 className="text-2xl text-[#8B6F67] text-center font-medium">
-                Tips y Notas
-              </h3>
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-red-200/50 backdrop-blur-sm z-50"
+          onClick={() => setIsOpen(false)}
+        >
+          <div className="relative bg-white p-6 rounded-lg w-80 text-center shadow-lg">
+            <Image
+              src="/tryit1.png"
+              alt="Decorative image"
+              width={300}
+              height={200}
+              className="absolute -top-6 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md -z-10 rotate-90"
+            />
+            <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-white p-3 rounded-full shadow-md border border-[#E8D8D0] z-10">
+              <ClipboardCheck className="w-10 h-10 text-[#C4A494]" />
             </div>
+            <h3 className="text-[#8B6F6F] text-xl mt-8 mb-4">Tips y Notas</h3>
 
             <div className="space-y-4 text-[#8B6F67]">
               <h3 className="font-medium">Ubicación:</h3>
@@ -67,6 +68,13 @@ export default function Tips() {
                 encontrarás un buzón para sobres en la recepción.
               </p>
             </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              type="button"
+            >
+              ✕
+            </button>
           </div>
         </div>
       )}
