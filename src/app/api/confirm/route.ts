@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import appendToSheet from "../../../lib/sheets.ts";
+import { appendToSheet } from "../../../lib/sheets.ts";
 
 export default async function POST(req: Request) {
   const body = await req.json();
