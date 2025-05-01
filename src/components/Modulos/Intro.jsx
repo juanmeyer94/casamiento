@@ -121,7 +121,7 @@ export default function Intro() {
           <span className="text-8xl text-[#C4A494] block mt-4">&rdquo;</span>
         </div>
 
-        <div className="fixed bottom-6 right-6">
+        <div className="fixed bottom-6 right-6 z-50">
           <button
             type="button"
             className="rounded-full bg-[#F5E6E0] border-none hover:bg-[#E5D5CF] p-2 transition-all duration-300 shadow-lg hover:shadow-xl"
