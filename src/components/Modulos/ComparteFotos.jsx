@@ -3,8 +3,7 @@ import { Instagram } from "lucide-react";
 
 export default function PhotosShare() {
   return (
-    <div className="relative w-full max-w-md mx-auto px-4 py-12 h-screen flex flex-col items-center justify-center text-center">
-
+    <div className="relative w-full mx-auto px-4 py-12 h-screen flex flex-col items-center justify-center text-center">
       <div className="absolute inset-0">
         <Image
           src="/pareja6.jpg"
@@ -21,6 +20,7 @@ export default function PhotosShare() {
           className="w-full h-28 text-pink-50"
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
         >
           <path d="M0,224L60,197.3C120,171,240,117,360,101.3C480,85,600,107,720,144C840,181,960,235,1080,218.7C1200,203,1320,117,1380,74.7L1440,32V0H1380C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0H0Z" />
         </svg>

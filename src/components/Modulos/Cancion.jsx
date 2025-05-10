@@ -1,11 +1,83 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Music } from "lucide-react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import Swal from "sweetalert2";
 
 export default function AltaParty() {
+  const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [song, setSong] = useState("");
+  const [link, setLink] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (session) {
+      setName(session.user?.name || "Anónimo");
+      setEmail(session.user?.email || "Sin correo");
+    }
+  }, [session]);
+
+  const handleSubmit = async () => {
+    if (!song) {
+      Swal.fire({
+        icon: "warning",
+        title: "Faltan datos",
+        text: "Por favor, ingresa el nombre de la canción.",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/songs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          date: new Date().toLocaleString(),
+          song,
+          link,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "¡Gracias!",
+          text: "Tu sugerencia ha sido enviada con éxito.",
+        });
+        setSong("");
+        setLink("");
+        setIsModalOpen(false);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.error || "Ocurrió un error al enviar tu sugerencia.",
+        });
+      }
+    } catch (error) {
+      Error("Error al enviar la sugerencia:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error al enviar tu sugerencia. Inténtalo nuevamente.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="w-full max-w-md mx-auto px-8 py-12 text-center">
@@ -40,7 +112,7 @@ export default function AltaParty() {
         cuenta.
       </p>
 
-      <div className="relative w-full mb-8 ">
+      <div className="relative w-full mb-8">
         <Image
           src="/floresEsquina.png"
           alt="Decorative floral element"
@@ -85,23 +157,31 @@ export default function AltaParty() {
             <input
               type="text"
               placeholder="Tu nombre"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="w-full p-2 mb-3 border rounded-md"
             />
             <input
               type="text"
               placeholder="Nombre de canción y autor"
+              value={song}
+              onChange={(e) => setSong(e.target.value)}
               className="w-full p-2 mb-3 border rounded-md"
             />
             <input
               type="text"
-              placeholder="Link de YouTube, Spotify, etc."
+              placeholder="Link de YouTube, Spotify, etc. (opcional)"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
               className="w-full p-2 mb-3 border rounded-md"
             />
             <button
+              onClick={handleSubmit}
               className="bg-[#E8B4A4] hover:bg-[#C4A494] text-white font-medium px-6 py-2 rounded-md transition-colors w-full"
               type="button"
+              disabled={isSubmitting}
             >
-              Sugerir Canción
+              {isSubmitting ? "Enviando..." : "Sugerir Canción"}
             </button>
             <button
               onClick={() => setIsModalOpen(false)}
