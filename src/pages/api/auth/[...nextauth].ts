@@ -8,5 +8,5 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  secret: "35f839ec0dc9a30c526416788fcdee64",
+  secret: process.env.NEXTAUTH_SECRET,
 });
