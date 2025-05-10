@@ -3,10 +3,19 @@
 import { Playfair_Display as playfairDisplay } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession, signIn } from "next-auth/react";
 
 const playfair = playfairDisplay({ subsets: ["latin"] });
 
 export default function Bienvenidos() {
+  const { status } = useSession();
+
+  const handleLogin = () => {
+    if (status === "unauthenticated") {
+      signIn("google");
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-red-50 px-4">
       <div className="max-w-md w-full text-center relative">
@@ -43,13 +52,22 @@ export default function Bienvenidos() {
             La música de fondo es parte de la experiencia
           </p>
           <div>
-            <Link
-              type="button"
-              href="/casamiento"
-              className="mt-6 px-8 py-2 bg-[#E5A19A] text-white rounded-md hover:bg-[#d8958e] transition-colors duration-300"
-            >
-              Ingresar
-            </Link>
+            {status === "authenticated" ? (
+              <Link
+                href="/casamiento"
+                className="bg-[#8B6F6F] text-white py-2 px-4 rounded-md hover:bg-[#8B6F6F]/80 transition duration-300"
+              >
+                Ver invitación
+              </Link>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className="bg-[#8B6F6F] text-white py-2 px-4 rounded-md hover:bg-[#8B6F6F]/80 transition duration-300"
+                type="button"
+              >
+                Iniciar sesión
+              </button>
+            )}
           </div>
         </div>
       </div>
