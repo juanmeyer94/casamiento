@@ -121,7 +121,7 @@ export default function Photos() {
           {getVisibleCarouselImages().map((index, i) => (
             <div
               key={index}
-              className={`relative transition-all duration-500 ease-in-out 
+              className={`relative transition-all duration-500 ease-in-out
                 ${
                   i === 1
                     ? "w-[280px] md:w-[320px] h-[340px] md:h-[400px] z-10"
@@ -134,7 +134,7 @@ export default function Photos() {
               tabIndex={i === 1 ? 0 : -1}
             >
               <div
-                className={`absolute inset-0 bg-white p-3 shadow-[0_0_10px_rgba(0,0,0,0.1)] 
+                className={`absolute inset-0 bg-white p-3 shadow-[0_0_10px_rgba(0,0,0,0.1)]
               ${getRotationClass(i)}
               `}
               >
@@ -186,16 +186,14 @@ export default function Photos() {
             role="dialog"
             aria-modal="true"
           >
-            <button
-              className="absolute left-0 text-gray-700 text-6xl h-full px-1 z-20 font-bold"
-              onClick={(e) => {
-                e.stopPropagation();
-                setModalIndex((prev) => previousImage(prev, images.length));
-              }}
-              type="button"
-            >
-              <ChevronLeft size={24} />
-            </button>
+             <button
+    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-70 p-3 rounded-full shadow-md hover:bg-opacity-90 transition-all"
+    aria-label="Previous image"
+    type="button"
+    onClick={() => setCarouselIndex((prev) => previousImage(prev, images.length))}
+  >
+    <ChevronLeft size={28} className="text-[#8B6F6F]" />
+  </button>
             <div className="relative w-full" style={{ paddingBottom: "80%" }}>
               <div className="">
                 <div className=" w-full h-[85%]">
@@ -215,17 +213,16 @@ export default function Photos() {
                 </div>
               </div>
             </div>
+                    <button
+    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-70 p-3 rounded-full shadow-md hover:bg-opacity-90 transition-all"
+    aria-label="Next image"
+    type="button"
+    onClick={() => setCarouselIndex((prev) => nextImage(prev, images.length))}
+  >
+    <ChevronRight size={28} className="text-[#8B6F6F]" />
+  </button>
           </div>
-          <button
-            className="absolute right-0 z-10 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-all"
-            onClick={(e) => {
-              e.stopPropagation();
-              setModalIndex((prev) => nextImage(prev, images.length));
-            }}
-            type="button"
-          >
-            <ChevronRight size={24} />
-          </button>
+
         </div>
       )}
     </div>
