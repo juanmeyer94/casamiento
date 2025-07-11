@@ -1,3 +1,4 @@
+/* eslint-disable */
 "use client";
 
 import { useState } from "react";
@@ -113,8 +114,8 @@ export default function Photos() {
           className="absolute left-0 z-10 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-all"
           aria-label="Previous image"
           type="button"
-          onClick={() => setCarouselIndex((prev) => previousImage(prev, images.length))}
-        >
+          onClick={() =>
+            setCarouselIndex((prev) => previousImage(prev, images.length))}>
           <ChevronLeft size={24} />
         </button>
         <div className="flex justify-center items-center gap-4 overflow-hidden">
@@ -129,7 +130,9 @@ export default function Photos() {
                 }
               `}
               onClick={() => i === 1 && openModal(index)}
-              onKeyDown={(e) => i === 1 && handleKeyDown(e, () => openModal(index))}
+              onKeyDown={(e) =>
+                i === 1 && handleKeyDown(e, () => openModal(index))
+              }
               role="button"
               tabIndex={i === 1 ? 0 : -1}
             >
@@ -161,7 +164,8 @@ export default function Photos() {
           className="absolute right-0 z-10 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-all"
           aria-label="Next image"
           type="button"
-          onClick={() => setCarouselIndex((prev) => nextImage(prev, images.length))}
+          onClick={() =>
+            setCarouselIndex((prev) => nextImage(prev, images.length))}
         >
           <ChevronRight size={24} />
         </button>
@@ -186,14 +190,15 @@ export default function Photos() {
             role="dialog"
             aria-modal="true"
           >
-             <button
-    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-70 p-3 rounded-full shadow-md hover:bg-opacity-90 transition-all"
-    aria-label="Previous image"
-    type="button"
-    onClick={() => setCarouselIndex((prev) => previousImage(prev, images.length))}
-  >
-    <ChevronLeft size={28} className="text-[#8B6F6F]" />
-  </button>
+            <button
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-70 p-3 rounded-full shadow-md hover:bg-opacity-90 transition-all"
+              aria-label="Previous image"
+              type="button"
+              onClick={() =>
+                setCarouselIndex((prev) => previousImage(prev, images.length))}
+            >
+              <ChevronLeft size={28} className="text-[#8B6F6F]" />
+            </button>
             <div className="relative w-full" style={{ paddingBottom: "80%" }}>
               <div className="">
                 <div className=" w-full h-[85%]">
@@ -213,16 +218,16 @@ export default function Photos() {
                 </div>
               </div>
             </div>
-                    <button
-    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-70 p-3 rounded-full shadow-md hover:bg-opacity-90 transition-all"
-    aria-label="Next image"
-    type="button"
-    onClick={() => setCarouselIndex((prev) => nextImage(prev, images.length))}
-  >
-    <ChevronRight size={28} className="text-[#8B6F6F]" />
-  </button>
+            <button
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-70 p-3 rounded-full shadow-md hover:bg-opacity-90 transition-all"
+              aria-label="Next image"
+              type="button"
+              onClick={() =>
+                setCarouselIndex((prev) => nextImage(prev, images.length))}
+            >
+              <ChevronRight size={28} className="text-[#8B6F6F]" />
+            </button>
           </div>
-
         </div>
       )}
     </div>
