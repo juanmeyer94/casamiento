@@ -63,6 +63,7 @@ export default function Photos() {
     }
   };
 
+
   const getRotationClass = (index) => {
     if (index === 1) return "transform-none";
     if (index === 0) return "-rotate-6";
