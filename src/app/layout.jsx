@@ -1,4 +1,5 @@
 import "./globals.css";
+import AuthSessionProvider from "@/components/Providers/SessionProvider";
 
 export const metadata = {
   title: "Casamiento Ivan y Mica 2025",
@@ -11,7 +12,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthSessionProvider>
+          {children}
+        </AuthSessionProvider>
+      </body>
     </html>
   );
 }
