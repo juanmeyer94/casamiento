@@ -1,39 +1,49 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DashboardAdmin from "@/components/Modulos/DashboardAdmin";
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession();
   const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [adminUsername, setAdminUsername] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (status === "loading") return;
-
-    if (!session) {
+    // Verificar si el usuario está autenticado como admin
+    const isLoggedIn = localStorage.getItem("admin_authenticated");
+    const username = localStorage.getItem("admin_username");
+    if (isLoggedIn === "true" && username) {
+      setIsAuthenticated(true);
+      setAdminUsername(username);
+    } else {
+      // No está autenticado, redirigir al login
       router.push("/admin/login");
+      return;
     }
-  }, [session, status, router]);
+    setLoading(false);
+  }, [router]);
 
-  const handleLogout = async () => {
-    await signOut({ callbackUrl: "/admin/login" });
+  const handleLogout = () => {
+    // Limpiar localStorage y redirigir al login
+    localStorage.removeItem("admin_authenticated");
+    localStorage.removeItem("admin_username");
+    router.push("/admin/login");
   };
 
-  if (status === "loading") {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-rose-500 mx-auto" />
-
-          <p className="mt-4 text-gray-600">Verificando autenticación...</p>
+          <p className="mt-4 text-gray-600">Cargando dashboard...</p>
         </div>
       </div>
     );
   }
 
-  if (!session) {
+  if (!isAuthenticated) {
     return null; // Se redirigirá al login
   }
 
@@ -46,7 +56,8 @@ export default function DashboardPage() {
             <div>
               <h1 className="text-xl font-semibold text-gray-900">
                 Bienvenido,
-                {session.user?.name}
+                {" "}
+                <span className="text-rose-500">{adminUsername}</span>
               </h1>
               <p className="text-sm text-gray-600">Panel de Administración</p>
             </div>
