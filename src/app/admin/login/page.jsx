@@ -1,6 +1,5 @@
 "use client";
 
-import { signIn, getSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -15,13 +14,10 @@ export default function LoginPage() {
 
   useEffect(() => {
     // Verificar si ya está logueado
-    const checkAuth = async () => {
-      const session = await getSession();
-      if (session) {
-        router.push("/admin/dashboard");
-      }
-    };
-    checkAuth();
+    const isLoggedIn = localStorage.getItem("admin_authenticated");
+    if (isLoggedIn === "true") {
+      router.push("/admin/dashboard");
+    }
   }, [router]);
 
   const handleSubmit = async (e) => {
@@ -30,19 +26,27 @@ export default function LoginPage() {
     setErrorMessage("");
 
     try {
-      const result = await signIn("credentials", {
-        username: credentials.username,
-        password: credentials.password,
-        redirect: false,
-      });
+      const adminUser = process.env.NEXT_PUBLIC_ADM_ACCOUNT;
+      const adminPass = process.env.NEXT_PUBLIC_ADM_PASSWORD;
+      // Comparación estricta
+      if (credentials.username === adminUser
+        && credentials.password === adminPass
+      ) {
+        try {
+          // Credenciales correctas, marcar como autenticado
+          localStorage.setItem("admin_authenticated", "true");
+          localStorage.setItem("admin_username", credentials.username);
 
-      if (result?.error) {
-        setErrorMessage("Credenciales incorrectas");
+          // Ir al dashboard
+          window.location.href = "/admin/dashboard";
+        } catch (error) {
+          throw new Error("❌ Error en el proceso de login:", error);
+        }
       } else {
-        router.push("/admin/dashboard");
+        setErrorMessage("Credenciales incorrectas");
       }
     } catch (error) {
-      setErrorMessage("Error al iniciar sesión", error);
+      throw new Error("Error al iniciar sesión");
     } finally {
       setLoading(false);
     }

@@ -1,21 +1,8 @@
-import { withAuth } from "next-auth/middleware";
-
-export default withAuth(
-  () => {
-    // Middleware adicional si es necesario
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // Proteger rutas /admin/dashboard
-        if (req.nextUrl.pathname.startsWith("/admin/dashboard")) {
-          return !!token;
-        }
-        return true;
-      },
-    },
-  },
-);
+/* eslint-disable no-console */
+export function middleware(request) {
+  // implementar middleware en un futuro
+  return console.log(request);
+}
 
 export const config = {
   matcher: ["/admin/dashboard/:path*"],

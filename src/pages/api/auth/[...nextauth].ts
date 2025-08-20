@@ -1,64 +1,22 @@
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 export default NextAuth({
   providers: [
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {
-        username: { label: "Usuario", type: "text" },
-        password: { label: "Contraseña", type: "password" },
-      },
-      async authorize(credentials) {
-        // Usuarios predeterminados
-        const validUsers = [
-          {
-            id: "1",
-            username: process.env.ADM_ACCOUNT,
-            password: process.env.ADM_PASSWORD,
-            name: "Administradores",
-            role: "admin",
-          },
-        ];
-
-        const user = validUsers.find(
-          (u) => u.username === credentials?.username
-            && u.password === credentials?.password,
-        );
-
-        if (user) {
-          return {
-            id: user.id,
-            name: user.name,
-            email: `${user.username}@admin.local`,
-            role: "admin",
-          };
-        }
-
-        return null;
-      },
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  pages: {
-    signIn: "/admin/login",
-  },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        // eslint-disable-next-line no-param-reassign
-        token.role = "admin";
+    async redirect({ url, baseUrl }) {
+      // NO redirigir automáticamente - dejar que el usuario se mantenga en la página principal
+      // Solo redirigir si es una URL externa
+      if (url.startsWith(baseUrl)) {
+        // Mantener en la misma página (no redirigir)
+        return baseUrl;
       }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session?.user) {
-        // eslint-disable-next-line no-param-reassign
-        session.user = {
-          ...session.user,
-          role: token.role as string,
-        };
-      }
-      return session;
+      return baseUrl;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

@@ -56,6 +56,10 @@ export default function Bienvenidos() {
               <Link
                 href="/casamiento"
                 className="bg-[#8B6F6F] text-white py-2 px-4 rounded-md hover:bg-[#8B6F6F]/80 transition duration-300"
+                onClick={() => {
+                  // Aquí se activará la música porque hay interacción del usuario
+                  console.log("🎵 Usuario haciendo click en Ver invitación - música se activará");
+                }}
               >
                 Ver invitación
               </Link>

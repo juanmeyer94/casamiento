@@ -24,29 +24,100 @@ export default function Intro() {
       audioRef.current = new Audio("/lethergo.mp3");
       audioRef.current.loop = true;
       audioRef.current.volume = 0.5;
+      audioRef.current.muted = false; // Asegurar que no esté muteado
+      // Estrategia 2: Múltiples eventos para capturar la primera interacción
+      const implementFallbackStrategies = () => {
+        const events = [
+          "click",
+          "touchstart",
+          "keydown",
+          "mousedown",
+          "scroll",
+          "wheel",
+        ];
 
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => setIsPlaying(true))
-          .catch(() => {
-            const handleUserInteraction = () => {
-              audioRef.current?.play();
+        const handleFirstInteraction = async () => {
+          try {
+            if (audioRef.current && !isPlaying) {
+              await audioRef.current.play();
               setIsPlaying(true);
-              document.removeEventListener("click", handleUserInteraction);
-              document.removeEventListener("touchstart", handleUserInteraction);
-            };
-            document.addEventListener("click", handleUserInteraction);
-            document.addEventListener("touchstart", handleUserInteraction);
+            }
+          } catch (error) {
+            throw new Error("Error en interacción:", error);
+          }
+
+          // Remover todos los event listeners
+          events.forEach((event) => {
+            document.removeEventListener(event, handleFirstInteraction);
           });
-      }
+        };
+
+        // Agregar listeners para múltiples eventos
+        events.forEach((event) => {
+          document.addEventListener(event, handleFirstInteraction, {
+            once: true,
+          });
+        });
+        // Estrategia 5: Intentar reproducir después de que la página esté cargada
+        const attemptDelayedAutoplay = async () => {
+          setTimeout(async () => {
+            try {
+              if (audioRef.current && !isPlaying) {
+                await audioRef.current.play();
+                setIsPlaying(true);
+              }
+            } catch (error) {
+              throw new Error("Error en autoplay diferido:", error);
+            }
+          }, 2000);
+        };
+
+        // Estrategia 3: Intentar reproducir después de un delay
+        setTimeout(async () => {
+          try {
+            if (audioRef.current && !isPlaying) {
+              await audioRef.current.play();
+              setIsPlaying(true);
+            }
+          } catch (error) {
+            throw new Error("Error con delay:", error);
+          }
+        }, 1000);
+
+        // Estrategia 4: Intentar reproducir cuando la página esté completamente cargada
+        if (document.readyState === "complete") {
+          attemptDelayedAutoplay();
+        } else {
+          window.addEventListener("load", attemptDelayedAutoplay);
+        }
+      };
+      // Estrategia 1: Intentar autoplay inmediato
+      const attemptAutoplay = async () => {
+        try {
+          // Configurar atributos para mejorar la compatibilidad
+          audioRef.current.preload = "auto";
+          audioRef.current.autoplay = true;
+          const playPromise = audioRef.current.play();
+          if (playPromise !== undefined) {
+            await playPromise;
+            setIsPlaying(true);
+          }
+        } catch (error) {
+          implementFallbackStrategies();
+        }
+      };
+
+      // Iniciar la estrategia principal
+      attemptAutoplay();
     }
 
     return () => {
-      audioRef.current?.pause();
-      audioRef.current = null;
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
     };
-  }, []);
+  }, [isPlaying]);
 
   const togglePlay = () => {
     if (audioRef.current) {
