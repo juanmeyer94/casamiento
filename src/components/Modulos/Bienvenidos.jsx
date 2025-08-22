@@ -1,14 +1,14 @@
 "use client";
 
-import { Playfair_Display as playfairDisplay } from "next/font/google";
 import Image from "next/image";
-import Link from "next/link";
 import { useSession, signIn } from "next-auth/react";
-
-const playfair = playfairDisplay({ subsets: ["latin"] });
+import Link from "next/link";
+import { Music, Pause } from "lucide-react";
+import { useAudio } from "../AudioProvider";
 
 export default function Bienvenidos() {
   const { status } = useSession();
+  const { isPlaying, togglePlay, mounted, audioReady } = useAudio();
 
   const handleLogin = () => {
     if (status === "unauthenticated") {
@@ -16,64 +16,88 @@ export default function Bienvenidos() {
     }
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-red-50 px-4">
-      <div className="max-w-md w-full text-center relative">
-        <div className="w-full flex justify-center border-b-2">
+  // Renderizar un placeholder mientras no esté montado
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
+        <div className="max-w-md w-full text-center">
           <Image
-            src="/flores2.png?height=100&width=300"
-            alt="Decorative flowers top"
-            width={500}
-            height={100}
-            className="opacity-80"
+            src="/titulo-mica-ivan.png"
+            alt="Iván & Mica - Invitación"
+            width={400}
+            height={300}
+            className="w-full h-auto"
+            priority
           />
         </div>
-        <div className="space-y-6">
-          <p className="text-rose-300 text-lg">
-            Bienvenidos a la invitación de
-          </p>
-          <div className={playfair.className}>
-            <h1 className="text-4xl md:text-5xl text-[#8B6F6F] tracking-wide">
-              IVAN
-              <span className="inline-block mx-2">&</span>
-              MICA
-            </h1>
-          </div>
-          <div className="w-full flex justify-center border-t-2">
-            <Image
-              src="/flores2.png?height=100&width=300"
-              alt="Decorative flowers bottom"
-              width={500}
-              height={100}
-              className="opacity-80 rotate-180"
-            />
-          </div>
-          <p className="text-rose-300 text-sm mt-8">
-            La música de fondo es parte de la experiencia
-          </p>
-          <div>
-            {status === "authenticated" ? (
-              <Link
-                href="/casamiento"
-                className="bg-[#8B6F6F] text-white py-2 px-4 rounded-md hover:bg-[#8B6F6F]/80 transition duration-300"
-                onClick={() => {
-                  // Aquí se activará la música porque hay interacción del usuario
-                  console.log("🎵 Usuario haciendo click en Ver invitación - música se activará");
-                }}
-              >
-                Ver invitación
-              </Link>
-            ) : (
-              <button
-                onClick={handleLogin}
-                className="bg-[#8B6F6F] text-white py-2 px-4 rounded-md hover:bg-[#8B6F6F]/80 transition duration-300"
-                type="button"
-              >
-                Iniciar sesión
-              </button>
-            )}
-          </div>
+        <div className="mt-16">
+          <button
+            className="bg-black text-white py-3 px-8 rounded-full hover:bg-gray-800 hover:scale-105 hover:shadow-xl transform transition-all duration-300 text-lg font-semibold lowercase tracking-wide shadow-lg"
+            type="button"
+          >
+            ver invitación
+          </button>
         </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
+      <div className="max-w-md w-full text-center">
+        {/* Imagen principal */}
+        <Image
+          src="/titulo-mica-ivan.png"
+          alt="Iván & Mica - Invitación"
+          width={400}
+          height={300}
+          className="w-full h-auto"
+          priority
+        />
+      </div>
+
+      {/* Botón separado más abajo */}
+      <div className="mt-16">
+        {status === "authenticated" ? (
+          <Link
+            href="/casamiento"
+            className="bg-black text-white py-3 px-8 rounded-full hover:bg-gray-800 hover:scale-105 hover:shadow-xl transform transition-all duration-300 text-lg font-semibold lowercase tracking-wide shadow-lg"
+            onClick={() => {
+              console.log("🎵 Usuario haciendo click en ver invitación - música se activará");
+            }}
+          >
+            ver invitación
+          </Link>
+        ) : (
+          <button
+            onClick={handleLogin}
+            className="bg-black text-white py-3 px-8 rounded-full hover:bg-gray-800 hover:scale-105 hover:shadow-xl transform transition-all duration-300 text-lg font-semibold lowercase tracking-wide shadow-lg"
+            type="button"
+          >
+            ver invitación
+          </button>
+        )}
+      </div>
+
+      {/* Botón de música */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <button
+          type="button"
+          className={`rounded-full p-2 transition-all duration-300 shadow-lg hover:shadow-xl ${
+            audioReady 
+              ? "bg-gray-100 border-none hover:bg-gray-200" 
+              : "bg-gray-300 border-none cursor-not-allowed"
+          }`}
+          onClick={togglePlay}
+          disabled={!audioReady}
+          aria-label={isPlaying ? "Pausar música" : "Reproducir música"}
+        >
+          {isPlaying ? (
+            <Pause className="h-6 w-6 text-gray-600" />
+          ) : (
+            <Music className="h-6 w-6 text-gray-600" />
+          )}
+        </button>
       </div>
     </div>
   );
