@@ -10,6 +10,7 @@ export function AudioProvider({ children }) {
   const [audioReady, setAudioReady] = useState(false);
   const audioRef = useRef(null);
   const hasInteractedRef = useRef(false);
+  const autoplayAttemptedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -42,6 +43,11 @@ export function AudioProvider({ children }) {
         
         const handleCanPlay = () => {
           setAudioReady(true);
+          // Intentar autoplay cuando el audio esté listo
+          if (!autoplayAttemptedRef.current) {
+            autoplayAttemptedRef.current = true;
+            attemptAutoplay();
+          }
         };
 
         audioRef.current.addEventListener("ended", handleEnded);
@@ -53,6 +59,19 @@ export function AudioProvider({ children }) {
         // Intentar cargar el audio
         audioRef.current.load();
 
+        // Función para intentar autoplay
+        const attemptAutoplay = async () => {
+          if (!hasInteractedRef.current && audioRef.current && audioRef.current.readyState >= 2) {
+            try {
+              await audioRef.current.play();
+              setIsPlaying(true);
+              hasInteractedRef.current = true;
+            } catch (error) {
+              console.log("Autoplay bloqueado, esperando interacción del usuario");
+            }
+          }
+        };
+
         // Función para manejar la primera interacción
         const handleFirstInteraction = async () => {
           if (!hasInteractedRef.current && audioRef.current && audioRef.current.readyState >= 2) {
@@ -61,7 +80,7 @@ export function AudioProvider({ children }) {
               await audioRef.current.play();
               setIsPlaying(true);
             } catch (error) {
-              console.error("Error al reproducir automáticamente:", error);
+              console.error("Error al reproducir en interacción:", error);
             }
           }
         };
@@ -72,6 +91,9 @@ export function AudioProvider({ children }) {
         events.forEach((event) => {
           document.addEventListener(event, handleFirstInteraction, { once: true });
         });
+
+        // Intentar autoplay después de un delay
+        setTimeout(attemptAutoplay, 1000);
 
         return () => {
           if (audioRef.current) {

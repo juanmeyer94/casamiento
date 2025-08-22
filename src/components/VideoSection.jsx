@@ -49,3 +49,4 @@ export default function VideoSection({ videoSrc, children, className = "" }) {
     </section>
   );
 }
+
