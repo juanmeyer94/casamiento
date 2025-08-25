@@ -3,42 +3,152 @@
 import { useState } from "react";
 import { ClipboardCheck } from "lucide-react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function Tips() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full max-w-md mx-auto px-8 py-12 text-center ">
-      <div className="relative w-full mb-8 ">
-        <Image
-          src="/floresEsquina.png"
-          alt="Decorative floral element"
-          width={150}
-          height={150}
-          className="absolute -left-8 -rotate-12 -top-12 opacity-80 z-20"
-        />
+    <div className="w-full max-w-md mx-auto px-8 py-12 text-center">
+      <motion.div
+        className="relative w-full mb-8"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      >
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border flex flex-col items-center border-[#E8D8D0]">
+          <motion.h2
+            className="text-[#000000] text-2xl mb-4 flex items-center justify-center gap-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            TIPS Y NOTAS
+          </motion.h2>
 
-        <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-sm border border-[#E8D8D0] flex flex-col items-center">
-          <h2 className="text-[#8B6F67] text-2xl">TIPS Y NOTAS</h2>
-          <ClipboardCheck className="w-12 h-12 text-[#C4A494] m-4" />
+          {/* Emojis con animación sutil */}
+          <motion.div
+            className="flex items-center gap-6 mb-4"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <motion.div
+              animate={{
+                rotateY: [0, 180, 0],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              whileHover={{
+                scale: 1.1,
+                rotateY: [0, 180, 0],
+              }}
+              className="text-3xl"
+            >
+              📋
+            </motion.div>
+            <motion.div
+              animate={{
+                rotateY: [0, 180, 0],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.5,
+              }}
+              whileHover={{
+                scale: 1.1,
+                rotateY: [0, 180, 0],
+              }}
+              className="text-3xl"
+            >
+              💡
+            </motion.div>
+          </motion.div>
 
-          <p className="text-[#8B6F67]">
-            Información adicional para tener en cuenta
-          </p>
-          <button
+          {/* Elementos flotantes decorativos */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <motion.div
+              className="absolute top-4 left-4 text-lg"
+              animate={{
+                y: [-5, -15, -5],
+                opacity: [0.6, 1, 0.6],
+              }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              📝
+            </motion.div>
+            <motion.div
+              className="absolute top-8 right-6 text-sm"
+              animate={{
+                y: [-3, -12, -3],
+                opacity: [0.5, 0.9, 0.5],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.8,
+              }}
+            >
+              ✨
+            </motion.div>
+            <motion.div
+              className="absolute bottom-8 left-8 text-base"
+              animate={{
+                y: [-4, -10, -4],
+                opacity: [0.4, 0.8, 0.4],
+              }}
+              transition={{
+                duration: 2.8,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1.2,
+              }}
+            >
+              💭
+            </motion.div>
+          </div>
+
+          <motion.p
+            className="text-[#6e6d6c] text-lg mb-6 text-center"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+          >
+            ✨ Información adicional para tener en cuenta
+          </motion.p>
+
+          <motion.button
             onClick={() => setIsOpen(true)}
-            className="mt-4 bg-[#E5A19A] hover:bg-[#d8958e] text-white rounded-full px-16 py-2"
+            className="mt-4 bg-[#ffffff] text-black border-2 border-black rounded-full px-8 py-3 font-medium transition-all duration-300 hover:shadow-lg hover:scale-105"
             type="button"
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+            }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1 }}
           >
             + Info
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Modal */}
       {isOpen && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-red-200/50 backdrop-blur-sm z-50"
+          className="fixed inset-0 flex items-center justify-center bg-gray-300/50 backdrop-blur-sm z-50"
           role="button"
           tabIndex="0"
           onClick={() => setIsOpen(false)}

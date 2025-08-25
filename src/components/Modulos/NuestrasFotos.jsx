@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Playfair_Display as PlayfairDisplay,
   Cormorant_Garamond as CormorantGaramond,
@@ -9,6 +9,7 @@ import {
 } from "next/font/google";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, useInView } from "framer-motion";
 
 const playfair = PlayfairDisplay({ subsets: ["latin"] });
 const cormorant = CormorantGaramond({
@@ -21,23 +22,31 @@ export default function Photos() {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [modalIndex, setModalIndex] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  
+  // Referencias para las animaciones de viewport
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, threshold: 0.3 });
 
   const images = [
     {
-      src: "/pareja1.webp?height=800&width=600",
+      src: "/ivan-mica-1.png?height=800&width=600",
       caption: "Nuestro primer día juntos",
     },
     {
-      src: "/pareja2.webp?height=800&width=600",
+      src: "/ivan-mica-2.png?height=800&width=600",
       caption: "Bajo la luz de la luna",
     },
     {
-      src: "/pareja3.webp?height=800&width=600",
+      src: "/ivan-mica-3.png?height=800&width=600",
       caption: "Momentos especiales",
     },
-    { src: "/pareja4.jpg?height=800&width=600", caption: "Risas compartidas" },
-    { src: "/pareja5.jpeg?height=800&width=600", caption: "Amor eterno" },
-    { src: "/pareja6.jpg?height=800&width=600", caption: "Juntos por siempre" },
+    { src: "/ivan-mica-4.png?height=800&width=600", caption: "Risas compartidas" },
+    { src: "/ivan-mica-5.png?height=800&width=600", caption: "Amor eterno" },
+    { src: "/ivan-mica-6.png?height=800&width=600", caption: "Juntos por siempre" },
+    { src: "/ivan-mica-7.png?height=800&width=600", caption: "Juntos por siempre" },
+    { src: "/ivan-mica-8.png?height=800&width=600", caption: "Juntos por siempre" },
+    { src: "/ivan-mica-9.png?height=800&width=600", caption: "Juntos por siempre" },
+    { src: "/ivan-mica-10.png?height=800&width=600", caption: "Juntos por siempre" },
   ];
 
   const nextImage = (index, length) => (index + 1) % length;
@@ -63,7 +72,6 @@ export default function Photos() {
     }
   };
 
-
   const getRotationClass = (index) => {
     if (index === 1) return "transform-none";
     if (index === 0) return "-rotate-6";
@@ -71,7 +79,13 @@ export default function Photos() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto px-4 py-12">
+    <motion.div 
+      ref={ref}
+      className="w-full max-w-md mx-auto px-4 py-12"
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="relative h-32 mb-12">
         <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2">
           <Image
@@ -84,10 +98,10 @@ export default function Photos() {
           />
         </div>
         <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="w-44 h-44 bg-white rounded-full shadow-md flex items-center justify-center p-2">
+          <div className="w-44 h-44 bg-white shadow-md flex items-center justify-center p-2">
             <div className="relative w-32 h-32">
               <Image
-                src="/camerafloressf.png"
+                src="/camera-example.jpg"
                 alt="Novios ilustración"
                 fill
                 className="object-contain"
@@ -97,26 +111,46 @@ export default function Photos() {
           </div>
         </div>
       </div>
-      <div className="text-center mb-6">
-        <h1
-          className={`${playfair.className} text-[#8B6F6F] text-4xl md:text-5xl mb-4`}
-        >
-          Retratos de Nuestro Amor
-        </h1>
-        <p
-          className={`${cormorant.className} text-[#C4A494] text-xl md:text-2xl`}
-        >
-          Un minuto, un segundo, un instante que queda en la eternidad
-        </p>
-      </div>
+      <motion.div 
+        className="text-center mb-6"
+        initial={{ opacity: 0, y: 40 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+      >
+        <div className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-lg border border-white/50 mb-6">
+          <motion.h1
+            className={`${playfair.className} text-[#000000] text-4xl md:text-5xl mb-4 font-bold`}
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            Retratos de Nuestro Amor
+          </motion.h1>
+          <motion.p
+            className={`${cormorant.className} text-[#2e2c2b] text-xl md:text-2xl font-medium`}
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+          >
+            Un minuto, un segundo, un instante que queda en la eternidad
+          </motion.p>
+        </div>
+      </motion.div>
 
-      <div className="relative flex justify-center items-center gap-4 h-[400px] md:h-[500px]">
+      <motion.div 
+        className="relative flex justify-center items-center gap-4 h-[400px] md:h-[500px]"
+        initial={{ opacity: 0, y: 40 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        transition={{ duration: 0.6, delay: 1.0 }}
+      >
         <button
           className="absolute left-0 z-10 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-all"
           aria-label="Previous image"
           type="button"
           onClick={() =>
-            setCarouselIndex((prev) => previousImage(prev, images.length))}>
+            setCarouselIndex((prev) => previousImage(prev, images.length))
+          }
+        >
           <ChevronLeft size={24} />
         </button>
         <div className="flex justify-center items-center gap-4 overflow-hidden">
@@ -166,11 +200,12 @@ export default function Photos() {
           aria-label="Next image"
           type="button"
           onClick={() =>
-            setCarouselIndex((prev) => nextImage(prev, images.length))}
+            setCarouselIndex((prev) => nextImage(prev, images.length))
+          }
         >
           <ChevronRight size={24} />
         </button>
-      </div>
+        </motion.div>
       {modalOpen && (
         <div
           className="fixed inset-0 bg-red-200 bg-opacity-65 z-50 flex items-center justify-center p-4"
@@ -196,7 +231,8 @@ export default function Photos() {
               aria-label="Previous image"
               type="button"
               onClick={() =>
-                setCarouselIndex((prev) => previousImage(prev, images.length))}
+                setCarouselIndex((prev) => previousImage(prev, images.length))
+              }
             >
               <ChevronLeft size={28} className="text-[#8B6F6F]" />
             </button>
@@ -224,13 +260,15 @@ export default function Photos() {
               aria-label="Next image"
               type="button"
               onClick={() =>
-                setCarouselIndex((prev) => nextImage(prev, images.length))}
+                setCarouselIndex((prev) => nextImage(prev, images.length))
+              }
             >
               <ChevronRight size={28} className="text-[#8B6F6F]" />
             </button>
           </div>
+        {/* Cierre correcto del contenedor modal */}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

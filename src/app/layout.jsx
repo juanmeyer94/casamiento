@@ -1,5 +1,6 @@
 import "./globals.css";
 import AuthSessionProvider from "@/components/Providers/SessionProvider";
+import { AudioProvider } from "@/components/AudioProvider";
 
 export const metadata = {
   title: "Casamiento Ivan y Mica 2025",
@@ -11,10 +12,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body>
         <AuthSessionProvider>
-          {children}
+          <AudioProvider>
+            {children}
+          </AudioProvider>
         </AuthSessionProvider>
       </body>
     </html>
