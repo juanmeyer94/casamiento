@@ -222,7 +222,7 @@ export default function GeneralInfo() {
           <p
             className={`${cormorant.className} text-[#2e2c2b] text-xl font-medium mb-4`}
           >
-            Ruta km tanto - Rafaela, Santa Fe
+            María, Hostal y Eventos - Rafaela, Santa Fe
           </p>
           <button
             className="bg-white text-black border-2 border-black py-2 px-6 rounded-full hover:bg-gray-100 hover:scale-105 hover:shadow-xl transform transition-all duration-300 text-base font-semibold lowercase tracking-wide shadow-lg"
