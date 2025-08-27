@@ -37,7 +37,7 @@ export default function VideoSection({ videoSrc, children, className = "" }) {
         >
           <source src={videoSrc} type="video/mp4" />
         </video>
-        
+
         {/* Overlay elegante para sección */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
       </motion.div>
@@ -49,4 +49,3 @@ export default function VideoSection({ videoSrc, children, className = "" }) {
     </section>
   );
 }
-

@@ -17,7 +17,12 @@ const cormorant = CormorantGaramond({
 });
 
 export default function Intro() {
-  const { isPlaying, togglePlay, mounted, audioReady } = useAudio();
+  const {
+    isPlaying,
+    togglePlay,
+    mounted,
+    audioReady,
+  } = useAudio();
 
   // Referencias para las animaciones de viewport
   const heroRef = useRef(null);
@@ -155,8 +160,8 @@ export default function Intro() {
           <button
             type="button"
             className={`rounded-full p-2 transition-all duration-300 shadow-lg hover:shadow-xl ${
-              audioReady 
-                ? "bg-gray-100 border-none hover:bg-gray-200" 
+              audioReady
+                ? "bg-gray-100 border-none hover:bg-gray-200"
                 : "bg-gray-300 border-none cursor-not-allowed"
             }`}
             onClick={togglePlay}

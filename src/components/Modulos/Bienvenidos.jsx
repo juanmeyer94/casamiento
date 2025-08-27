@@ -8,7 +8,12 @@ import { useAudio } from "../AudioProvider";
 
 export default function Bienvenidos() {
   const { status } = useSession();
-  const { isPlaying, togglePlay, mounted, audioReady } = useAudio();
+  const {
+    isPlaying,
+    togglePlay,
+    mounted,
+    audioReady,
+  } = useAudio();
 
   const handleLogin = () => {
     if (status === "unauthenticated") {
@@ -62,9 +67,6 @@ export default function Bienvenidos() {
           <Link
             href="/casamiento"
             className="bg-black text-white py-3 px-8 rounded-full hover:bg-gray-800 hover:scale-105 hover:shadow-xl transform transition-all duration-300 text-lg font-semibold lowercase tracking-wide shadow-lg"
-            onClick={() => {
-              console.log("🎵 Usuario haciendo click en ver invitación - música se activará");
-            }}
           >
             ver invitación
           </Link>
@@ -84,8 +86,8 @@ export default function Bienvenidos() {
         <button
           type="button"
           className={`rounded-full p-2 transition-all duration-300 shadow-lg hover:shadow-xl ${
-            audioReady 
-              ? "bg-gray-100 border-none hover:bg-gray-200" 
+            audioReady
+              ? "bg-gray-100 border-none hover:bg-gray-200"
               : "bg-gray-300 border-none cursor-not-allowed"
           }`}
           onClick={togglePlay}

@@ -1,6 +1,14 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useRef } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 
 const AudioContext = createContext();
 
@@ -22,25 +30,37 @@ export function AudioProvider({ children }) {
         audioRef.current.volume = 0.5;
         audioRef.current.preload = "auto";
 
+        // Función para intentar autoplay
+        const attemptAutoplay = async () => {
+          if (!hasInteractedRef.current && audioRef.current && audioRef.current.readyState >= 2) {
+            try {
+              await audioRef.current.play();
+              setIsPlaying(true);
+              hasInteractedRef.current = true;
+            } catch (error) {
+              // Autoplay bloqueado, esperando interacción del usuario
+            }
+          }
+        };
+
         // Event listeners para el audio
         const handleEnded = () => {
           setIsPlaying(false);
         };
-        
+
         const handlePause = () => {
           setIsPlaying(false);
         };
-        
+
         const handlePlay = () => {
           setIsPlaying(true);
         };
-        
-        const handleError = (e) => {
-          console.error("Error cargando audio:", e);
+
+        const handleError = () => {
           setIsPlaying(false);
           setAudioReady(false);
         };
-        
+
         const handleCanPlay = () => {
           setAudioReady(true);
           // Intentar autoplay cuando el audio esté listo
@@ -59,19 +79,6 @@ export function AudioProvider({ children }) {
         // Intentar cargar el audio
         audioRef.current.load();
 
-        // Función para intentar autoplay
-        const attemptAutoplay = async () => {
-          if (!hasInteractedRef.current && audioRef.current && audioRef.current.readyState >= 2) {
-            try {
-              await audioRef.current.play();
-              setIsPlaying(true);
-              hasInteractedRef.current = true;
-            } catch (error) {
-              console.log("Autoplay bloqueado, esperando interacción del usuario");
-            }
-          }
-        };
-
         // Función para manejar la primera interacción
         const handleFirstInteraction = async () => {
           if (!hasInteractedRef.current && audioRef.current && audioRef.current.readyState >= 2) {
@@ -80,14 +87,14 @@ export function AudioProvider({ children }) {
               await audioRef.current.play();
               setIsPlaying(true);
             } catch (error) {
-              console.error("Error al reproducir en interacción:", error);
+              // Error al reproducir en interacción
             }
           }
         };
 
         // Agregar listeners para múltiples eventos de interacción
         const events = ["click", "touchstart", "keydown", "mousedown", "scroll"];
-        
+
         events.forEach((event) => {
           document.addEventListener(event, handleFirstInteraction, { once: true });
         });
@@ -105,20 +112,19 @@ export function AudioProvider({ children }) {
             audioRef.current.pause();
             audioRef.current = null;
           }
-          
+
           // Remover event listeners
           events.forEach((event) => {
             document.removeEventListener(event, handleFirstInteraction);
           });
         };
       } catch (error) {
-        console.error("Error inicializando audio:", error);
         setAudioReady(false);
       }
     }
   }, []);
 
-  const togglePlay = async () => {
+  const togglePlay = useCallback(async () => {
     if (!audioRef.current) {
       return;
     }
@@ -135,17 +141,19 @@ export function AudioProvider({ children }) {
         }
       }
     } catch (error) {
-      console.error("Error al controlar la música:", error);
       setIsPlaying(false);
     }
-  };
+  }, [isPlaying]);
 
-  const value = {
-    isPlaying,
-    togglePlay,
-    mounted,
-    audioReady,
-  };
+  const value = useMemo(
+    () => ({
+      isPlaying,
+      togglePlay,
+      mounted,
+      audioReady,
+    }),
+    [isPlaying, mounted, audioReady, togglePlay],
+  );
 
   return (
     <AudioContext.Provider value={value}>

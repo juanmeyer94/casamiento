@@ -14,7 +14,7 @@ export default function AltaParty() {
   const [email, setEmail] = useState("");
   const [song, setSong] = useState("");
   const [link, setLink] = useState("");
-  
+
   // Referencias para las animaciones de viewport
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, threshold: 0.3 });
@@ -85,14 +85,14 @@ export default function AltaParty() {
   };
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       className="w-full max-w-md mx-auto px-8 py-12 text-center"
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
       transition={{ duration: 0.6 }}
     >
-      <motion.div 
+      <motion.div
         className="relative h-32 mb-12"
         initial={{ opacity: 0, y: 40 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
@@ -122,7 +122,7 @@ export default function AltaParty() {
           </div>
         </div>
       </motion.div>
-      <motion.div 
+      <motion.div
         className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-lg border border-white/50 mb-8"
         initial={{ opacity: 0, y: 40 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}

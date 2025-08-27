@@ -1,10 +1,15 @@
 "use client";
 
-import { useAudio } from "./AudioProvider";
 import { Music, Pause } from "lucide-react";
+import { useAudio } from "./AudioProvider";
 
 export default function AudioTest() {
-  const { isPlaying, togglePlay, mounted, audioReady } = useAudio();
+  const {
+    isPlaying,
+    togglePlay,
+    mounted,
+    audioReady,
+  } = useAudio();
 
   if (!mounted) {
     return (
@@ -17,9 +22,18 @@ export default function AudioTest() {
   return (
     <div className="fixed top-20 left-4 bg-green-500 text-white p-2 rounded z-50 text-sm">
       <div>Audio Test:</div>
-      <div>Ready: {audioReady ? "✅" : "❌"}</div>
-      <div>Playing: {isPlaying ? "🎵" : "⏸️"}</div>
+      <div>
+        Ready:
+        {" "}
+        {audioReady ? "✅" : "❌"}
+      </div>
+      <div>
+        Playing:
+        {" "}
+        {isPlaying ? "🎵" : "⏸️"}
+      </div>
       <button
+        type="button"
         onClick={togglePlay}
         disabled={!audioReady}
         className={`mt-2 px-2 py-1 rounded text-xs ${

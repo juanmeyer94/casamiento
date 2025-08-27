@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { X, Gift } from "lucide-react";
-import Image from "next/image";
+import { X } from "lucide-react";
 import { Playfair_Display as PlayfairDisplay } from "next/font/google";
 import { motion, useInView } from "framer-motion";
 
@@ -10,13 +9,13 @@ const playfair = PlayfairDisplay({ subsets: ["latin"] });
 
 export default function Regalos() {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   // Referencias para las animaciones de viewport
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, threshold: 0.3 });
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       className="w-full max-w-md mx-auto px-8 py-12 text-center"
       initial={{ opacity: 0, y: 40 }}

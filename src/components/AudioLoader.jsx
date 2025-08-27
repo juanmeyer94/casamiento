@@ -7,17 +7,17 @@ export default function AudioLoader() {
 
   useEffect(() => {
     const testAudio = new Audio("/san-lucas-song.mp3");
-    
+
     testAudio.addEventListener("loadstart", () => {
       setAudioStatus("Iniciando carga...");
     });
-    
+
     testAudio.addEventListener("canplay", () => {
       setAudioStatus("✅ Audio cargado correctamente");
     });
-    
+
     testAudio.addEventListener("error", (e) => {
-      setAudioStatus("❌ Error cargando audio: " + e.message);
+      setAudioStatus(`❌ Error cargando audio: ${e.message}`);
     });
 
     testAudio.load();

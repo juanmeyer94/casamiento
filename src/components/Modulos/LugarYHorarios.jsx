@@ -7,10 +7,10 @@ import {
 import { MapPin } from "lucide-react";
 import Image from "next/image";
 import { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { useSession, signIn } from "next-auth/react";
 import Swal from "sweetalert2";
 import Modal from "../Modal";
-import { motion, useInView } from "framer-motion";
 
 const playfair = PlayfairDisplay({ subsets: ["latin"] });
 const cormorant = CormorantGaramond({
@@ -26,12 +26,12 @@ export default function GeneralInfo() {
   const [confirmed, setConfirmed] = useState(false);
   const [attending, setAttending] = useState("Sí");
   const [message, setMessage] = useState("");
-  
+
   // Referencias para las animaciones de viewport
   const ref = useRef(null);
   const titleRef = useRef(null);
   const infoCardsRef = useRef(null);
-  
+
   const isInView = useInView(ref, { once: true, threshold: 0.3 });
   const titleInView = useInView(titleRef, { once: true, threshold: 0.3 });
   const infoCardsInView = useInView(infoCardsRef, { once: true, threshold: 0.3 });
@@ -104,7 +104,7 @@ export default function GeneralInfo() {
   };
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       className="w-full max-w-md mx-auto px-4 py-24"
       initial={{ opacity: 0, y: 40 }}
@@ -112,7 +112,7 @@ export default function GeneralInfo() {
       transition={{ duration: 0.6 }}
     >
       {/* Divisorio de celebración */}
-      <motion.div 
+      <motion.div
         className="relative h-32 mb-12"
         initial={{ opacity: 0, y: 40 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
@@ -128,7 +128,7 @@ export default function GeneralInfo() {
             priority
           />
         </div>
-        <motion.div 
+        <motion.div
           className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
           initial={{ opacity: 0, scale: 0 }}
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
@@ -149,7 +149,7 @@ export default function GeneralInfo() {
       </motion.div>
 
       {/* Celebración título */}
-      <motion.div 
+      <motion.div
         ref={titleRef}
         className="relative flex justify-center mb-12"
         initial={{ opacity: 0, y: 40 }}
@@ -166,7 +166,7 @@ export default function GeneralInfo() {
       </motion.div>
 
       {/* Información de la celebración */}
-      <motion.div 
+      <motion.div
         ref={infoCardsRef}
         className="space-y-8 text-center"
         initial={{ opacity: 0, y: 40 }}

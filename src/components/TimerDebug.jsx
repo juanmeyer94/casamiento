@@ -10,7 +10,7 @@ export default function TimerDebug() {
     const handleScroll = () => {
       const position = window.scrollY;
       setScrollPosition(position);
-      
+
       // Verificar si estamos cerca de donde debería estar el FechaYTimer
       // El FechaYTimer debería estar después del Intro (aproximadamente 100vh)
       if (position > 500 && position < 1500) {
@@ -20,15 +20,24 @@ export default function TimerDebug() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <div className="fixed top-80 left-4 bg-orange-500 text-white p-2 rounded z-50 text-sm">
       <div>Timer Debug:</div>
-      <div>Scroll: {scrollPosition}px</div>
-      <div>Timer visible: {isVisible ? "✅" : "❌"}</div>
+      <div>
+        Scroll:
+        {" "}
+        {scrollPosition}
+        px
+      </div>
+      <div>
+        Timer visible:
+        {" "}
+        {isVisible ? "✅" : "❌"}
+      </div>
       <div>Posición esperada: 500-1500px</div>
     </div>
   );

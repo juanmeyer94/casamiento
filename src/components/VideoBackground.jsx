@@ -21,8 +21,7 @@ export default function VideoBackground({ videoSrc, children }) {
         setIsLoaded(true);
       };
 
-      const handleError = (e) => {
-        console.error("Error cargando video:", e);
+      const handleError = () => {
         setIsLoaded(false);
       };
 
