@@ -294,9 +294,7 @@ export default function GeneralInfo() {
       <Modal open={open} onClose={() => setOpen(false)}>
         <h2 className="text-xl font-semibold mb-2">Confirmar asistencia</h2>
         <p>
-          Hola
-          <strong>{session ? session.user.name : null}</strong>
-          , ¿vas a venir?
+          Hola! Nos alegra que hayas entrado a nuestra página 😀
         </p>
 
         <div className="mb-3">
