@@ -10,7 +10,7 @@
     "eslint": "eslint \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
-    "framer": "^2.4.1",
+    "framer-motion": "^12.23.12",
     "googleapis": "^148.0.0",
     "lucide-react": "^0.469.0",
     "motion": "^12.10.5",

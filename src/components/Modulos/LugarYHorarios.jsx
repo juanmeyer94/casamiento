@@ -6,7 +6,8 @@ import {
 } from "next/font/google";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { useSession, signIn } from "next-auth/react";
 import Swal from "sweetalert2";
 import Modal from "../Modal";
@@ -25,6 +26,15 @@ export default function GeneralInfo() {
   const [confirmed, setConfirmed] = useState(false);
   const [attending, setAttending] = useState("Sí");
   const [message, setMessage] = useState("");
+
+  // Referencias para las animaciones de viewport
+  const ref = useRef(null);
+  const titleRef = useRef(null);
+  const infoCardsRef = useRef(null);
+
+  const isInView = useInView(ref, { once: true, threshold: 0.3 });
+  const titleInView = useInView(titleRef, { once: true, threshold: 0.3 });
+  const infoCardsInView = useInView(infoCardsRef, { once: true, threshold: 0.3 });
 
   const agendarCelebracion = () => {
     const title = encodeURIComponent("Casamiento de Mica y Ivan");
@@ -94,9 +104,20 @@ export default function GeneralInfo() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto px-4 py-24">
+    <motion.div
+      ref={ref}
+      className="w-full max-w-md mx-auto px-4 py-24"
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+      transition={{ duration: 0.6 }}
+    >
       {/* Divisorio de celebración */}
-      <div className="relative h-32 mb-12">
+      <motion.div
+        className="relative h-32 mb-12"
+        initial={{ opacity: 0, y: 40 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
         <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2">
           <Image
             src="/lineaconcorazon.png"
@@ -107,7 +128,12 @@ export default function GeneralInfo() {
             priority
           />
         </div>
-        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <motion.div
+          className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
           <div className="w-44 h-44 bg-white rounded-full shadow-md flex items-center justify-center p-2">
             <div className="relative w-32 h-32">
               <Image
@@ -119,92 +145,97 @@ export default function GeneralInfo() {
               />
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Celebración título */}
-      <div className="relative flex justify-center mb-12">
-        <div className="relative bg-transparent px-24 py-2 rounded-sm transform -skew-x-12 overflow-hidden">
-          <Image
-            src="/fondo2.png"
-            alt="Fondo decorativo"
-            fill
-            className="object-cover"
-            priority
-          />
+      <motion.div
+        ref={titleRef}
+        className="relative flex justify-center mb-12"
+        initial={{ opacity: 0, y: 40 }}
+        animate={titleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+      >
+        <div className="relative bg-white/95 backdrop-blur-sm px-24 py-4 rounded-lg shadow-lg border border-white/50 transform -skew-x-12 overflow-hidden">
           <h1
-            className={`${playfair.className} text-[#8B6F6F] text-3xl transform skew-x-12 relative z-10`}
+            className={`${playfair.className} text-[#000000] text-3xl transform skew-x-12 relative z-10 font-bold`}
           >
             Celebración
           </h1>
         </div>
-      </div>
+      </motion.div>
 
       {/* Información de la celebración */}
-      <div className="space-y-8 text-center">
-        <div>
+      <motion.div
+        ref={infoCardsRef}
+        className="space-y-8 text-center"
+        initial={{ opacity: 0, y: 40 }}
+        animate={infoCardsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        transition={{ duration: 0.6, delay: 0.8 }}
+      >
+        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg border border-white/50">
           <h2
-            className={`${cormorant.className} text-[#8B6F6F] text-2xl font-semibold mb-2`}
+            className={`${cormorant.className} text-[#000000] text-2xl font-semibold mb-2`}
           >
             DÍA
           </h2>
           <p
-            className={`${cormorant.className} text-[#C4A494] text-xl font-medium`}
+            className={`${cormorant.className} text-[#2e2c2b] text-xl font-medium mb-4`}
           >
             Sábado 8 de Noviembre - 21hs
           </p>
           <button
             onClick={agendarCelebracion}
-            className="mt-4 bg-[#E5A19A] hover:bg-[#d8958e] text-white rounded-full px-16 py-2 font-bold"
+            className="bg-white text-black border-2 border-black py-2 px-6 rounded-full hover:bg-gray-100 hover:scale-105 hover:shadow-xl transform transition-all duration-300 text-base font-semibold lowercase tracking-wide shadow-lg"
             type="button"
           >
-            Agendar
+            agendar
           </button>
         </div>
 
-        <div>
+        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg border border-white/50">
           <h2
-            className={`${cormorant.className} text-[#8B6F6F] text-2xl font-semibold mb-2`}
+            className={`${cormorant.className} text-[#000000] text-2xl font-semibold mb-2`}
           >
             LUGAR
           </h2>
           <p
-            className={`${cormorant.className} text-[#C4A494] text-xl font-medium`}
+            className={`${cormorant.className} text-[#2e2c2b] text-xl font-medium mb-4`}
           >
             Ruta Nacional 34 - Rafaela
           </p>
           <button
             onClick={handleModal}
-            className="mt-4 bg-[#E5A19A] hover:bg-[#d8958e] text-white rounded-full px-6 py-2 font-bold"
+            className="bg-white text-black border-2 border-black py-2 px-6 rounded-full hover:bg-gray-100 hover:scale-105 hover:shadow-xl transform transition-all duration-300 text-base font-semibold lowercase tracking-wide shadow-lg"
             type="button"
           >
-            Confirmar asistencia
+            confirmar asistencia
           </button>
         </div>
 
-        <div>
+        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg border border-white/50">
           <h2
-            className={`${cormorant.className} text-[#8B6F6F] text-2xl font-semibold mb-2`}
+            className={`${cormorant.className} text-[#000000] text-2xl font-semibold mb-2`}
           >
             DIRECCIÓN
           </h2>
           <p
-            className={`${cormorant.className} text-[#C4A494] text-xl font-medium`}
+            className={`${cormorant.className} text-[#2e2c2b] text-xl font-medium mb-4`}
           >
-            Ruta km tanto - Rafaela, Santa Fe
+            María, Hostal y Eventos - Rafaela, Santa Fe
           </p>
           <button
-            className="mt-4 bg-[#E5A19A] hover:bg-[#d8958e] text-white rounded-full px-10 py-2"
+            className="bg-white text-black border-2 border-black py-2 px-6 rounded-full hover:bg-gray-100 hover:scale-105 hover:shadow-xl transform transition-all duration-300 text-base font-semibold lowercase tracking-wide shadow-lg"
             type="button"
             onClick={() => setIsPartyMapModalOpen(true)}
           >
-            <div className="flex items-center justify-center gap-2 font-bold">
-              <MapPin size={18} />
-              Cómo llegar
+            <div className="flex items-center justify-center gap-2">
+              <MapPin size={16} />
+              cómo llegar
             </div>
           </button>
         </div>
-      </div>
+      </motion.div>
       {isMapModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500/50 backdrop-blur-sm z-50">
           <div className="relative bg-white p-6 rounded-lg w-96 text-center shadow-lg">
@@ -303,6 +334,6 @@ export default function GeneralInfo() {
           Confirmar
         </button>
       </Modal>
-    </div>
+    </motion.div>
   );
 }
