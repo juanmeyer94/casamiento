@@ -9,6 +9,7 @@ import {
   useMemo,
   useCallback,
 } from "react";
+import { usePathname } from "next/navigation";
 
 const AudioContext = createContext();
 
@@ -19,9 +20,18 @@ export function AudioProvider({ children }) {
   const audioRef = useRef(null);
   const hasInteractedRef = useRef(false);
   const autoplayAttemptedRef = useRef(false);
+  const pathname = usePathname();
+
+  // Verificar si estamos en una ruta de admin
+  const isAdminRoute = pathname?.startsWith("/admin");
 
   useEffect(() => {
     setMounted(true);
+
+    // Si estamos en una ruta de admin, no inicializar el audio
+    if (isAdminRoute) {
+      return;
+    }
 
     if (typeof window !== "undefined") {
       try {
@@ -122,10 +132,19 @@ export function AudioProvider({ children }) {
         setAudioReady(false);
       }
     }
-  }, []);
+  }, [isAdminRoute]);
+
+  // Efecto para pausar la música cuando se navega a admin
+  useEffect(() => {
+    if (isAdminRoute && audioRef.current && isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [isAdminRoute, isPlaying]);
 
   const togglePlay = useCallback(async () => {
-    if (!audioRef.current) {
+    // Si estamos en una ruta de admin, no permitir reproducir música
+    if (isAdminRoute || !audioRef.current) {
       return;
     }
 
@@ -143,16 +162,16 @@ export function AudioProvider({ children }) {
     } catch (error) {
       setIsPlaying(false);
     }
-  }, [isPlaying]);
+  }, [isPlaying, isAdminRoute]);
 
   const value = useMemo(
     () => ({
-      isPlaying,
+      isPlaying: isAdminRoute ? false : isPlaying,
       togglePlay,
       mounted,
-      audioReady,
+      audioReady: isAdminRoute ? false : audioReady,
     }),
-    [isPlaying, mounted, audioReady, togglePlay],
+    [isPlaying, mounted, audioReady, togglePlay, isAdminRoute],
   );
 
   return (

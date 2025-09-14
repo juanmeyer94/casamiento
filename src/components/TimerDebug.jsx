@@ -5,8 +5,11 @@ import { useState, useEffect } from "react";
 export default function TimerDebug() {
   const [isVisible, setIsVisible] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    
     const handleScroll = () => {
       const position = window.scrollY;
       setScrollPosition(position);
@@ -23,6 +26,10 @@ export default function TimerDebug() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className="fixed top-80 left-4 bg-orange-500 text-white p-2 rounded z-50 text-sm">

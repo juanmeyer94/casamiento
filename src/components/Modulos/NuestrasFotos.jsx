@@ -1,15 +1,15 @@
 /* eslint-disable */
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Playfair_Display as PlayfairDisplay,
   Cormorant_Garamond as CormorantGaramond,
   Caveat,
 } from "next/font/google";
 import Image from "next/image";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { X, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 
 const playfair = PlayfairDisplay({ subsets: ["latin"] });
 const cormorant = CormorantGaramond({
@@ -19,12 +19,17 @@ const cormorant = CormorantGaramond({
 const caveat = Caveat({ subsets: ["latin"] });
 
 export default function Photos() {
-  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [modalIndex, setModalIndex] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  const [isAutoplay, setIsAutoplay] = useState(true);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
   
   // Referencias para las animaciones de viewport
   const ref = useRef(null);
+  const carouselRef = useRef(null);
+  const autoplayRef = useRef(null);
   const isInView = useInView(ref, { once: true, threshold: 0.3 });
 
   const images = [
@@ -49,13 +54,64 @@ export default function Photos() {
     { src: "/ivan-mica-10.png?height=800&width=600", caption: "Juntos por siempre" },
   ];
 
-  const nextImage = (index, length) => (index + 1) % length;
-  const previousImage = (index, length) => (index - 1 + length) % length;
+  const totalImages = images.length;
 
-  const getVisibleCarouselImages = () => {
-    const prev = previousImage(carouselIndex, images.length);
-    const next = nextImage(carouselIndex, images.length);
-    return [prev, carouselIndex, next];
+  // Autoplay con loop infinito
+  useEffect(() => {
+    if (isInView && isAutoplay) {
+      autoplayRef.current = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % totalImages);
+      }, 4000); // Cambia cada 4 segundos
+    }
+
+    return () => {
+      if (autoplayRef.current) {
+        clearInterval(autoplayRef.current);
+      }
+    };
+  }, [isInView, isAutoplay, totalImages]);
+
+  // Funciones de navegación
+  const nextImage = () => {
+    setCurrentIndex((prev) => (prev + 1) % totalImages);
+  };
+
+  const previousImage = () => {
+    setCurrentIndex((prev) => (prev - 1 + totalImages) % totalImages);
+  };
+
+  const goToImage = (index) => {
+    setCurrentIndex(index);
+  };
+
+  // Funciones para manejo táctil
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextImage();
+    }
+    if (isRightSwipe) {
+      previousImage();
+    }
+  };
+
+  // Toggle autoplay
+  const toggleAutoplay = () => {
+    setIsAutoplay(!isAutoplay);
   };
 
   const openModal = (index) => {
@@ -72,203 +128,238 @@ export default function Photos() {
     }
   };
 
-  const getRotationClass = (index) => {
-    if (index === 1) return "transform-none";
-    if (index === 0) return "-rotate-6";
-    return "rotate-6";
+  // Obtener las imágenes visibles (actual, anterior y siguiente)
+  const getVisibleImages = () => {
+    const prev = (currentIndex - 1 + totalImages) % totalImages;
+    const next = (currentIndex + 1) % totalImages;
+    return [prev, currentIndex, next];
   };
 
   return (
     <motion.div 
       ref={ref}
-      className="w-full max-w-md mx-auto px-4 py-12"
+      className="relative overflow-hidden bg-gradient-to-br from-orange-50/80 via-white/80 to-pink-50/80 py-16"
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
       transition={{ duration: 0.6 }}
     >
-      <div className="relative h-32 mb-12">
-        <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2">
-          <Image
-            src="/lineaconcorazon.png"
-            alt="Divisor decorativo"
-            width={1000}
-            height={50}
-            className="w-full object-cover opacity-50"
-            priority
-          />
-        </div>
-        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="w-44 h-44 bg-white shadow-md flex items-center justify-center p-2">
-            <div className="relative w-32 h-32">
-              <Image
-                src="/camera-example.jpg"
-                alt="Novios ilustración"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </div>
-        </div>
+      {/* Video de fondo */}
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover opacity-30"
+        >
+          <source src="/video-background.mp4" type="video/mp4" />
+        </video>
       </div>
-      <motion.div 
-        className="text-center mb-6"
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-      >
-        <div className="bg-white/95 backdrop-blur-sm rounded-lg p-8 shadow-lg border border-white/50 mb-6">
-          <motion.h1
-            className={`${playfair.className} text-[#000000] text-4xl md:text-5xl mb-4 font-bold`}
-            initial={{ opacity: 0, y: 40 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
-            Retratos de Nuestro Amor
-          </motion.h1>
-          <motion.p
-            className={`${cormorant.className} text-[#2e2c2b] text-xl md:text-2xl font-medium`}
-            initial={{ opacity: 0, y: 40 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-          >
-            Un minuto, un segundo, un instante que queda en la eternidad
-          </motion.p>
-        </div>
-      </motion.div>
 
-      <motion.div 
-        className="relative flex justify-center items-center gap-4 h-[400px] md:h-[500px]"
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-        transition={{ duration: 0.6, delay: 1.0 }}
-      >
-        <button
-          className="absolute left-0 z-10 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-all"
-          aria-label="Previous image"
-          type="button"
-          onClick={() =>
-            setCarouselIndex((prev) => previousImage(prev, images.length))
-          }
+      <div className="relative z-10 max-w-6xl mx-auto px-4">
+        {/* Header */}
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <ChevronLeft size={24} />
-        </button>
-        <div className="flex justify-center items-center gap-4 overflow-hidden">
-          {getVisibleCarouselImages().map((index, i) => (
-            <div
-              key={index}
-              className={`relative transition-all duration-500 ease-in-out
-                ${
-                  i === 1
-                    ? "w-[280px] md:w-[320px] h-[340px] md:h-[400px] z-10"
-                    : "w-[40px] md:w-[100px] h-[340px] md:h-[400px] opacity-60"
-                }
-              `}
-              onClick={() => i === 1 && openModal(index)}
-              onKeyDown={(e) =>
-                i === 1 && handleKeyDown(e, () => openModal(index))
-              }
-              role="button"
-              tabIndex={i === 1 ? 0 : -1}
+          <div className="glass-card p-8 mb-8">
+            <motion.h1
+              className={`${playfair.className} text-4xl md:text-5xl mb-4 font-bold text-gray-800`}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <div
-                className={`absolute inset-0 bg-white p-3 shadow-[0_0_10px_rgba(0,0,0,0.1)]
-              ${getRotationClass(i)}
-              `}
-              >
-                <div className="relative w-full h-[85%] bg-gray-100">
-                  <Image
-                    src={images[index].src || "/placeholder.svg"}
-                    alt={`Foto ${index + 1}`}
-                    fill
-                    className="object-cover sepia brightness-[0.95] contrast-[1.05]"
-                  />
-                </div>
-                <div className="h-[15%] bg-white pt-2">
-                  <p
-                    className={`${caveat.className} text-center text-lg text-gray-700`}
-                  >
-                    {images[index].caption}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <button
-          className="absolute right-0 z-10 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-all"
-          aria-label="Next image"
-          type="button"
-          onClick={() =>
-            setCarouselIndex((prev) => nextImage(prev, images.length))
-          }
-        >
-          <ChevronRight size={24} />
-        </button>
+              Retratos de Nuestro Amor
+            </motion.h1>
+            <motion.p
+              className={`${cormorant.className} text-xl md:text-2xl font-medium text-gray-600`}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              Un minuto, un segundo, un instante que queda en la eternidad
+            </motion.p>
+          </div>
         </motion.div>
-      {modalOpen && (
-        <div
-          className="fixed inset-0 bg-red-200 bg-opacity-65 z-50 flex items-center justify-center p-4"
-          onClick={closeModal}
-          onKeyDown={(e) => handleKeyDown(e, closeModal)}
-          role="button"
-          tabIndex={0}
+
+        {/* Carrusel 3D Elegante */}
+        <motion.div 
+          ref={carouselRef}
+          className="relative h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden"
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          style={{ touchAction: 'pan-y' }}
         >
+          {/* Contenedor del carrusel 3D */}
+          <div className="relative flex items-center justify-center w-full h-full">
+            {getVisibleImages().map((imageIndex, position) => {
+              const isActive = position === 1; // La imagen del medio es la activa
+              const isLeft = position === 0;
+              const isRight = position === 2;
+              
+              return (
+                <motion.div
+                  key={`${imageIndex}-${currentIndex}`}
+                  className={`absolute transition-all duration-800 ease-out ${
+                    isActive 
+                      ? 'w-[320px] md:w-[380px] h-[400px] md:h-[480px] z-20' 
+                      : 'w-[200px] md:w-[240px] h-[250px] md:h-[300px] z-10'
+                  }`}
+                  style={{
+                    transform: isActive 
+                      ? 'translateX(0) scale(1) rotateY(0deg)' 
+                      : isLeft 
+                        ? 'translateX(-140px) scale(0.75) rotateY(15deg)' 
+                        : 'translateX(140px) scale(0.75) rotateY(-15deg)',
+                  }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ 
+                    opacity: isActive ? 1 : 0.4,
+                    scale: isActive ? 1 : 0.75,
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    ease: [0.4, 0.0, 0.2, 1],
+                  }}
+                  onClick={() => isActive && openModal(imageIndex)}
+                  onKeyDown={(e) => isActive && handleKeyDown(e, () => openModal(imageIndex))}
+                  role="button"
+                  tabIndex={isActive ? 0 : -1}
+                >
+                  <div className="relative w-full h-full bg-white rounded-2xl shadow-2xl overflow-hidden border border-white/20 backdrop-blur-sm">
+                    <div className="relative w-full h-[85%] bg-gray-100">
+                      <Image
+                        src={images[imageIndex].src}
+                        alt={`Foto ${imageIndex + 1}`}
+                        fill
+                        className="object-cover"
+                        priority={isActive}
+                      />
+                    </div>
+                    <div className="h-[15%] bg-white flex items-center justify-center px-4">
+                      <p className={`${caveat.className} text-center text-lg text-gray-700 font-medium`}>
+                        {images[imageIndex].caption}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Botones de navegación */}
           <button
-            className="absolute top-4 right-4 z-50 text-white hover:text-gray-300 bg-red-400 rounded-full"
-            onClick={closeModal}
+            className="absolute left-4 z-30 glass-button"
+            onClick={previousImage}
+            aria-label="Imagen anterior"
             type="button"
           >
-            <X size={24} />
+            <ChevronLeft size={28} />
           </button>
-          <div
-            className="relative max-h-[90vh] w-[190vw] md:max-w-3xl bg-white rounded-xl p-6 shadow-2xl shadow-black"
-            role="dialog"
-            aria-modal="true"
+
+          <button
+            className="absolute right-4 z-30 glass-button"
+            onClick={nextImage}
+            aria-label="Siguiente imagen"
+            type="button"
           >
-            <button
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-70 p-3 rounded-full shadow-md hover:bg-opacity-90 transition-all"
-              aria-label="Previous image"
-              type="button"
-              onClick={() =>
-                setCarouselIndex((prev) => previousImage(prev, images.length))
-              }
-            >
-              <ChevronLeft size={28} className="text-[#8B6F6F]" />
-            </button>
-            <div className="relative w-full" style={{ paddingBottom: "80%" }}>
-              <div className="">
-                <div className=" w-full h-[85%]">
-                  <Image
-                    src={images[modalIndex].src || "/placeholder.svg"}
-                    alt="Foto ampliada"
-                    fill
-                    className="object-contain rounded-lg"
-                  />
-                </div>
-                <div className="h-[15%] bg-white flex items-center justify-center">
-                  <p
-                    className={`${caveat.className} text-center text-2xl md:text-3xl text-gray-700`}
-                  >
-                    {images[modalIndex].caption}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <button
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-70 p-3 rounded-full shadow-md hover:bg-opacity-90 transition-all"
-              aria-label="Next image"
-              type="button"
-              onClick={() =>
-                setCarouselIndex((prev) => nextImage(prev, images.length))
-              }
-            >
-              <ChevronRight size={28} className="text-[#8B6F6F]" />
-            </button>
+            <ChevronRight size={28} />
+          </button>
+
+          {/* Botón de autoplay */}
+          <button
+            className="absolute top-4 right-4 z-30 glass-button"
+            onClick={toggleAutoplay}
+            aria-label={isAutoplay ? "Pausar autoplay" : "Reanudar autoplay"}
+            type="button"
+          >
+            {isAutoplay ? <Pause size={20} /> : <Play size={20} />}
+          </button>
+        </motion.div>
+
+        {/* Indicadores */}
+        <motion.div 
+          className="flex flex-col items-center gap-6 mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 1.0 }}
+        >
+          {/* Indicador de autoplay */}
+          <div className="flex items-center gap-2">
+            <div className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              isAutoplay ? 'bg-orange-500 animate-pulse' : 'bg-gray-400'
+            }`} />
           </div>
-        {/* Cierre correcto del contenedor modal */}
-        </div>
-      )}
+          
+          {/* Puntos de navegación */}
+          <div className="flex justify-center items-center gap-2">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  index === currentIndex 
+                    ? 'bg-orange-500 scale-125' 
+                    : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+                onClick={() => goToImage(index)}
+                aria-label={`Ir a foto ${index + 1}`}
+                type="button"
+              />
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {modalOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeModal}
+          >
+            <motion.div
+              className="relative max-w-4xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="absolute top-4 right-4 z-10 glass-button"
+                onClick={closeModal}
+                type="button"
+              >
+                <X size={24} />
+              </button>
+              
+              <div className="relative w-full" style={{ paddingBottom: "75%" }}>
+                <Image
+                  src={images[modalIndex].src}
+                  alt="Foto ampliada"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              
+              <div className="p-6 bg-white">
+                <p className={`${caveat.className} text-center text-2xl text-gray-700`}>
+                  {images[modalIndex].caption}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

@@ -9,8 +9,10 @@ export default function DashboardPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminUsername, setAdminUsername] = useState("");
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // Verificar si el usuario está autenticado como admin
     const isLoggedIn = localStorage.getItem("admin_authenticated");
     const username = localStorage.getItem("admin_username");
@@ -32,7 +34,7 @@ export default function DashboardPage() {
     router.push("/admin/login");
   };
 
-  if (loading) {
+  if (!mounted || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">

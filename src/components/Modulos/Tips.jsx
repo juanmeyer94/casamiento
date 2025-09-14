@@ -178,11 +178,6 @@ export default function Tips() {
                 La ceremonia y recepción serán al aire libre. Se recomienda
                 traer un abrigo ligero para la noche.
               </p>
-              <h3 className="font-medium">Regalos:</h3>
-              <p>
-                Tu presencia es nuestro mejor regalo. Si deseas contribuir,
-                encontrarás un buzón para sobres en la recepción.
-              </p>
             </div>
             <button
               onClick={() => setIsOpen(false)}
