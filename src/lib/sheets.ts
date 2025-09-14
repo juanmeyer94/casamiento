@@ -4,11 +4,15 @@ export async function appendToSheet({
   name,
   email,
   attending,
+  peopleCount,
+  vegetarianMenu,
   message,
 }: {
   name: string;
   email: string;
   attending: string;
+  peopleCount: string;
+  vegetarianMenu: string;
   message: string;
 }) {
   const auth = new google.auth.GoogleAuth({
@@ -26,10 +30,20 @@ export async function appendToSheet({
   const sheets = google.sheets({ version: "v4", auth });
 
   const spreadsheetId = "1aSVTDdzjWQdZNQljF4ZirO-SGFCiQD4pXkXahzS2Alw";
-  const range = "Test!A:E";
+  const range = "Test!A:G";
 
   const resource = {
-    values: [[new Date().toLocaleString(), name, email, attending, message]],
+    values: [
+      [
+        new Date().toLocaleString(),
+        name,
+        email,
+        attending,
+        peopleCount,
+        vegetarianMenu,
+        message,
+      ],
+    ],
   };
 
   await sheets.spreadsheets.values.append({

@@ -171,14 +171,14 @@ export default function DressTips() {
             </div>
             <h3 className="text-[#8B6F6F] text-xl mt-8 mb-4">Dress Code</h3>
             <div className="space-y-4 text-[#8B6F67]">
-              <p>Formalsss</p>
+              <p>Formal</p>
               <h3 className="font-medium">Para ellas:</h3>
               <p>
-                Vestido largo, en tonos suaves o pasteles. Evitar blanco y
-                negro.
+                Se sugiere asistir con calzado cómodo.
+                Les pedimos evitar los tonos blanco, beige y crema.
               </p>
               <h3 className="font-medium">Para ellos:</h3>
-              <p>Traje oscuro o claro con corbata. Evitar smoking.</p>
+              <p>Evitar traje azul oscuro.</p>
             </div>
             <button
               onClick={() => setIsOpen(false)}

@@ -144,9 +144,9 @@ export default function Intro() {
         >
           <span className="text-6xl text-gray-500 block">&ldquo;</span>
           <p className="text-gray-700 text-xl md:text-2xl lg:text-3xl leading-relaxed font-medium">
-            Todos somos mortales,
+            Estamos felices de poder compartir con ustedes,
             <br />
-            hasta el primer beso y la segunda copa de vino
+            este momento tan especial, por eso te invitamos a que nos acompañes
           </p>
           <span className="text-6xl text-gray-500 block mt-4">&rdquo;</span>
         </motion.div>

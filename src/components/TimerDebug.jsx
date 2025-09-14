@@ -9,7 +9,6 @@ export default function TimerDebug() {
 
   useEffect(() => {
     setMounted(true);
-    
     const handleScroll = () => {
       const position = window.scrollY;
       setScrollPosition(position);

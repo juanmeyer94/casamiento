@@ -4,7 +4,7 @@ import { appendToSheet } from "../../../lib/sheets.ts";
 export async function POST(req: Request) {
   const body = await req.json();
   const {
-    name, email, attending, message,
+    name, email, attending, peopleCount, vegetarianMenu, message,
   } = body;
 
   if (!email || !name) {
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
   try {
     await appendToSheet({
-      name, email, attending, message,
+      name, email, attending, peopleCount, vegetarianMenu, message,
     });
     return NextResponse.json({ success: true });
   } catch (error) {

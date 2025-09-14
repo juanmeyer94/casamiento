@@ -274,13 +274,6 @@ export default function AltaParty() {
               onChange={(e) => setSong(e.target.value)}
               className="w-full p-2 mb-3 border rounded-md"
             />
-            <input
-              type="text"
-              placeholder="Link de YouTube, Spotify, etc. (opcional)"
-              value={link}
-              onChange={(e) => setLink(e.target.value)}
-              className="w-full p-2 mb-3 border rounded-md"
-            />
             <button
               onClick={handleSubmit}
               className="bg-[#E8B4A4] hover:bg-[#C4A494] text-white font-medium px-6 py-2 rounded-md transition-colors w-full"

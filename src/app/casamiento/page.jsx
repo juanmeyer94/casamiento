@@ -12,6 +12,7 @@ import Regalos from "../../components/Modulos/Regalos";
 import PhotosShare from "../../components/Modulos/ComparteFotos";
 import DressTips from "../../components/Modulos/DressTips";
 import Tips from "../../components/Modulos/Tips";
+import Precio from "../../components/Modulos/Precio";
 
 export default function Home() {
   return (
@@ -38,6 +39,7 @@ export default function Home() {
               <AltaParty />
               <DressTips />
               <Tips />
+              <Precio />
               <Regalos />
               <PhotosShare />
             </SessionProvider>

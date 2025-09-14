@@ -4,7 +4,7 @@ import { getAppendedData } from "@/lib/sheets.ts";
 export async function GET() {
   try {
     const spreadsheetId = "1aSVTDdzjWQdZNQljF4ZirO-SGFCiQD4pXkXahzS2Alw";
-    const range = "Test!A:E";
+    const range = "Test!A:G";
 
     const data = await getAppendedData(spreadsheetId, range);
 
@@ -17,7 +17,9 @@ export async function GET() {
       nombreCompleto: row[1] || "",
       email: row[2] || "",
       asistira: row[3] || "",
-      comentarios: row[4] || "",
+      cantidadPersonas: row[4] || "1",
+      menuVegetariano: row[5] || "0",
+      comentarios: row[6] || "",
     }));
 
     return NextResponse.json(users);

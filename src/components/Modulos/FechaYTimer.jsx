@@ -14,7 +14,7 @@ export default function Timer() {
   useEffect(() => {
     setMounted(true);
 
-    const targetDate = new Date("2025-11-08T20:00:00");
+    const targetDate = new Date("2025-11-08T18:00:00");
 
     const timer = setInterval(() => {
       const now = new Date();
@@ -51,7 +51,7 @@ export default function Timer() {
   return (
     <div className="w-full flex items-center justify-center p-4">
       <div className="w-full text-white text-center bg-black/80 backdrop-blur-sm rounded-lg p-8 shadow-lg">
-        <h3 className="text-lg mb-4">8 DE NOVIEMBRE DE 2025</h3>
+        <h3 className="text-lg mb-4">SÁBADO 8 DE NOVIEMBRE DE 2025</h3>
         <h2 className="text-xl mb-8">FALTAN...</h2>
         <div className="flex items-center justify-center gap-6 text-center">
           <div>

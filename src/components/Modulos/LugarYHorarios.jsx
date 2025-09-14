@@ -25,6 +25,8 @@ export default function GeneralInfo() {
   const [open, setOpen] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [attending, setAttending] = useState("Sí");
+  const [peopleCount, setPeopleCount] = useState("1");
+  const [vegetarianMenu, setVegetarianMenu] = useState("0");
   const [message, setMessage] = useState("");
 
   // Referencias para las animaciones de viewport
@@ -82,6 +84,8 @@ export default function GeneralInfo() {
         name: session.user.name,
         email: session.user.email,
         attending,
+        peopleCount,
+        vegetarianMenu,
         message,
       }),
     });
@@ -182,7 +186,7 @@ export default function GeneralInfo() {
           <p
             className={`${cormorant.className} text-[#2e2c2b] text-xl font-medium mb-4`}
           >
-            Sábado 8 de Noviembre - 21hs
+            Sábado 8 de Noviembre - 18hs
           </p>
           <button
             onClick={agendarCelebracion}
@@ -310,6 +314,63 @@ export default function GeneralInfo() {
           </select>
         </div>
 
+        {attending === "Sí" && (
+          <div className="mb-3">
+            <label className="block text-sm font-medium" htmlFor="peopleCount">
+              ¿Cuántas personas vienen? (incluyéndote)
+            </label>
+            <select
+              id="peopleCount"
+              value={peopleCount}
+              onChange={(e) => setPeopleCount(e.target.value)}
+              className="w-full border rounded p-2"
+            >
+              <option value="1">1 persona</option>
+              <option value="2">2 personas</option>
+              <option value="3">3 personas</option>
+              <option value="4">4 personas</option>
+              <option value="5">5 personas</option>
+              <option value="6">6 personas</option>
+              <option value="7">7 personas</option>
+              <option value="8">8 personas</option>
+              <option value="9">9 personas</option>
+              <option value="10">10 personas</option>
+            </select>
+            <p className="text-xs text-gray-600 mt-1">
+              Ejemplo: Si vienes con tu pareja e hijo, selecciona &quot;3 personas&quot;
+            </p>
+          </div>
+        )}
+
+        {attending === "Sí" && (
+          <div className="mb-3">
+            <label className="block text-sm font-medium" htmlFor="vegetarianMenu">
+              ¿Cuántas personas necesitan menú vegetariano/vegano?
+            </label>
+            <select
+              id="vegetarianMenu"
+              value={vegetarianMenu}
+              onChange={(e) => setVegetarianMenu(e.target.value)}
+              className="w-full border rounded p-2"
+            >
+              <option value="0">Ninguna - menú normal</option>
+              <option value="1">1 persona</option>
+              <option value="2">2 personas</option>
+              <option value="3">3 personas</option>
+              <option value="4">4 personas</option>
+              <option value="5">5 personas</option>
+              <option value="6">6 personas</option>
+              <option value="7">7 personas</option>
+              <option value="8">8 personas</option>
+              <option value="9">9 personas</option>
+              <option value="10">10 personas</option>
+            </select>
+            <p className="text-xs text-gray-600 mt-1">
+              Selecciona cuántas personas de tu grupo necesitan menú vegetariano o vegano
+            </p>
+          </div>
+        )}
+
         <div className="mb-3">
           <label className="block text-sm font-medium" htmlFor="message">
             Mensaje o aclaración
@@ -320,7 +381,7 @@ export default function GeneralInfo() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             className="w-full border rounded p-2"
-            placeholder="Puedo llevar algo, vengo con mi pareja, etc."
+            placeholder="Recordar que quiero menu vegetariano."
           />
         </div>
 

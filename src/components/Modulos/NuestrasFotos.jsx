@@ -34,24 +34,23 @@ export default function Photos() {
 
   const images = [
     {
-      src: "/ivan-mica-1.png?height=800&width=600",
-      caption: "Nuestro primer día juntos",
+      src: "/ivan-mica-1.jpg?height=1200&width=600",
+      caption: "2017",
     },
     {
-      src: "/ivan-mica-2.png?height=800&width=600",
-      caption: "Bajo la luz de la luna",
+      src: "/ivan-mica-2.jpg?height=800&width=600",
+      caption: "2018",
     },
     {
-      src: "/ivan-mica-3.png?height=800&width=600",
-      caption: "Momentos especiales",
+      src: "/ivan-mica-3.jpg?height=800&width=600",
+      caption: "2019",
     },
-    { src: "/ivan-mica-4.png?height=800&width=600", caption: "Risas compartidas" },
-    { src: "/ivan-mica-5.png?height=800&width=600", caption: "Amor eterno" },
-    { src: "/ivan-mica-6.png?height=800&width=600", caption: "Juntos por siempre" },
-    { src: "/ivan-mica-7.png?height=800&width=600", caption: "Juntos por siempre" },
-    { src: "/ivan-mica-8.png?height=800&width=600", caption: "Juntos por siempre" },
-    { src: "/ivan-mica-9.png?height=800&width=600", caption: "Juntos por siempre" },
-    { src: "/ivan-mica-10.png?height=800&width=600", caption: "Juntos por siempre" },
+    { src: "/ivan-mica-4.jpg?height=800&width=600", caption: "2020" },
+    { src: "/ivan-mica-5.jpg?height=800&width=600", caption: "2021" },
+    { src: "/ivan-mica-6.jpg?height=800&width=600", caption: "2022" },
+    { src: "/ivan-mica-7.jpg?height=800&width=600", caption: "2023" },
+    { src: "/ivan-mica-8.jpg?height=800&width=600", caption: "2024" },
+    { src: "/ivan-mica-9.jpg?height=800&width=600", caption: "2025" },
   ];
 
   const totalImages = images.length;
