@@ -139,13 +139,29 @@ export default function Precio() {
           </div>
 
           <motion.p
-            className="text-[#6e6d6c] text-lg mb-6 text-center"
+            className="text-[#6e6d6c] text-lg mb-4 text-center"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
           >
             ✨ Información sobre el costo de la entrada
           </motion.p>
+
+          <motion.div
+            className="mb-6 text-center"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.0 }}
+          >
+            <div className="bg-blue-50 border-2 border-[#2563eb] rounded-lg px-4 py-3 inline-block shadow-md">
+              <p className="text-[#2563eb] text-lg font-semibold">
+                Por favor, no olvides confirmar tu asistencia antes del 20 de octubre
+              </p>
+              <div className="text-center text-2xl mt-1">
+                😊
+              </div>
+            </div>
+          </motion.div>
 
           <motion.button
             onClick={() => setIsOpen(true)}

@@ -30,7 +30,7 @@ export async function appendToSheet({
   const sheets = google.sheets({ version: "v4", auth });
 
   const spreadsheetId = "1aSVTDdzjWQdZNQljF4ZirO-SGFCiQD4pXkXahzS2Alw";
-  const range = "Test!A:G";
+  const range = "Respuestas Formulario Casamiento!A:G";
 
   const resource = {
     values: [
@@ -83,7 +83,7 @@ export async function appendToSongsSheet({
   const sheets = google.sheets({ version: "v4", auth });
 
   const spreadsheetId = "1aSVTDdzjWQdZNQljF4ZirO-SGFCiQD4pXkXahzS2Alw";
-  const range = "Canciones!A:E";
+  const range = "Respuesta Recomendaciones Canciones!A:E";
 
   const resource = {
     values: [[name, email, date || new Date().toLocaleString(), song, link || ""]],
