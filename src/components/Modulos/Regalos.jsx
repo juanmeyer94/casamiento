@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { X } from "lucide-react";
+import { X, Copy, Check } from "lucide-react";
 import { Playfair_Display as PlayfairDisplay } from "next/font/google";
 import { motion, useInView } from "framer-motion";
 
@@ -9,10 +9,30 @@ const playfair = PlayfairDisplay({ subsets: ["latin"] });
 
 export default function Regalos() {
   const [isOpen, setIsOpen] = useState(false);
+  const [copiedCBU, setCopiedCBU] = useState(false);
+  const [copiedAlias, setCopiedAlias] = useState(false);
 
   // Referencias para las animaciones de viewport
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, threshold: 0.3 });
+
+  const cbu = "0070665630004003642015";
+  const alias = "BODA.IVAN.Y.MICA";
+
+  const copyToClipboard = async (text, type) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      if (type === "cbu") {
+        setCopiedCBU(true);
+        setTimeout(() => setCopiedCBU(false), 3000);
+      } else if (type === "alias") {
+        setCopiedAlias(true);
+        setTimeout(() => setCopiedAlias(false), 3000);
+      }
+    } catch (err) {
+      // Error al copiar al portapapeles
+    }
+  };
 
   return (
     <motion.div
@@ -188,19 +208,71 @@ export default function Regalos() {
               <div className="space-y-2">
                 <h4 className="font-medium">Banco Principal</h4>
                 <p className="text-lg">Banco Galicia</p>
-                <div className="bg-[#FAF7F6] p-4 rounded-lg space-y-2">
-                  <p>
-                    <span className="font-medium">Titular: </span>
-                    Ivan Alejandro Meyer
-                  </p>
-                  <p>
-                    <span className="font-medium">CBU: </span>
-                    0070111830004170374926
-                  </p>
-                  <p>
-                    <span className="font-medium">Alias: </span>
-                    IVAN.MEYER.GALICIA
-                  </p>
+                <div className="bg-[#FAF7F6] p-4 rounded-lg space-y-4">
+                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                    <p className="text-sm font-medium text-blue-800 text-center">
+                      Titular:
+                      <span className="font-bold">Ivan Alejandro Meyer</span>
+                    </p>
+                  </div>
+
+                  {/* CBU con botón de copia */}
+                  <div className="bg-gray-50 p-3 rounded-lg border">
+                    <p className="text-sm text-gray-600 mb-1">CBU:</p>
+                    <p className="font-mono text-sm mb-2">{cbu}</p>
+                    <div className="flex justify-center">
+                      <button
+                        onClick={() => copyToClipboard(cbu, "cbu")}
+                        className={`flex items-center gap-1 px-3 py-1 rounded text-xs font-medium transition-all duration-200 ${
+                          copiedCBU
+                            ? "bg-green-500 text-white scale-105"
+                            : "bg-blue-500 text-white hover:bg-blue-600"
+                        }`}
+                        type="button"
+                      >
+                        {copiedCBU ? (
+                          <>
+                            <Check className="w-3 h-3" />
+                            <span>¡Copiado!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" />
+                            <span>Copiar</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Alias con botón de copia */}
+                  <div className="bg-gray-50 p-3 rounded-lg border">
+                    <p className="text-sm text-gray-600 mb-1">Alias:</p>
+                    <p className="font-mono text-sm mb-2">{alias}</p>
+                    <div className="flex justify-center">
+                      <button
+                        onClick={() => copyToClipboard(alias, "alias")}
+                        className={`flex items-center gap-1 px-3 py-1 rounded text-xs font-medium transition-all duration-200 ${
+                          copiedAlias
+                            ? "bg-green-500 text-white scale-105"
+                            : "bg-blue-500 text-white hover:bg-blue-600"
+                        }`}
+                        type="button"
+                      >
+                        {copiedAlias ? (
+                          <>
+                            <Check className="w-3 h-3" />
+                            <span>¡Copiado!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" />
+                            <span>Copiar</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
               <p className="text-center italic text-[#C4A494]">
