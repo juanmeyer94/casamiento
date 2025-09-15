@@ -40,7 +40,6 @@ export default function DashboardAdmin() {
 
       if (Array.isArray(usersData)) {
         totalConfirmations = usersData.length;
-        
         // Calcular total de personas que van a asistir
         totalPeopleAttending = usersData
           .filter((user) => user.asistira?.toLowerCase() === "sí")
