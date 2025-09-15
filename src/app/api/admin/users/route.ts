@@ -4,7 +4,7 @@ import { getAppendedData } from "@/lib/sheets.ts";
 export async function GET() {
   try {
     const spreadsheetId = "1aSVTDdzjWQdZNQljF4ZirO-SGFCiQD4pXkXahzS2Alw";
-    const range = "Test!A:G";
+    const range = "Respuestas Formulario Casamiento!A:G";
 
     const data = await getAppendedData(spreadsheetId, range);
 

@@ -4,7 +4,7 @@ import { getSongsData } from "@/lib/sheets.ts";
 export async function GET() {
   try {
     const spreadsheetId = "1aSVTDdzjWQdZNQljF4ZirO-SGFCiQD4pXkXahzS2Alw";
-    const range = "Canciones!A:E";
+    const range = "Respuesta Recomendaciones Canciones!A:E";
 
     const data = await getSongsData(spreadsheetId, range);
 
