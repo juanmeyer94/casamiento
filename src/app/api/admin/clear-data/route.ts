@@ -21,13 +21,13 @@ export async function DELETE() {
     // Borrar datos de confirmaciones (mantener solo el header)
     await sheets.spreadsheets.values.clear({
       spreadsheetId,
-      range: "Test!A2:G1000", // Borra desde la fila 2 hasta la 1000
+      range: "Respuestas Formulario Casamiento!A2:G1000", // Borra desde la fila 2 hasta la 1000
     });
 
     // Borrar datos de canciones (mantener solo el header)
     await sheets.spreadsheets.values.clear({
       spreadsheetId,
-      range: "Canciones!A2:E1000",
+      range: "Respuesta Recomendaciones Canciones!A2:E1000",
     });
 
     return NextResponse.json({
