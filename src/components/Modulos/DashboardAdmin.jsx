@@ -32,23 +32,33 @@ export default function DashboardAdmin() {
       setSongs(songsData);
 
       // Calcular estadísticas con verificación de tipos
-      let attending = 0;
-      let notAttending = 0;
-      let totalUsers = 0;
-      let totalPeople = 0;
+      let totalConfirmations = 0;
+      let totalPeopleAttending = 0;
+      let totalPeopleNotAttending = 0;
+      let totalVegetarianMenu = 0;
       let totalSongs = 0;
 
       if (Array.isArray(usersData)) {
-        attending = usersData.filter(
-          (user) => user.asistira?.toLowerCase() === "sí",
-        ).length;
-        notAttending = usersData.filter(
-          (user) => user.asistira?.toLowerCase() === "no",
-        ).length;
-        totalUsers = usersData.length;
+        totalConfirmations = usersData.length;
+        
+        // Calcular total de personas que van a asistir
+        totalPeopleAttending = usersData
+          .filter((user) => user.asistira?.toLowerCase() === "sí")
+          .reduce((sum, user) => {
+            const cantidadPersonas = parseInt(user.cantidadPersonas || "1", 10);
+            return sum + (Number.isNaN(cantidadPersonas) ? 1 : cantidadPersonas);
+          }, 0);
+
+        // Calcular total de personas que NO van a asistir
+        totalPeopleNotAttending = usersData
+          .filter((user) => user.asistira?.toLowerCase() === "no")
+          .reduce((sum, user) => {
+            const cantidadPersonas = parseInt(user.cantidadPersonas || "1", 10);
+            return sum + (Number.isNaN(cantidadPersonas) ? 1 : cantidadPersonas);
+          }, 0);
 
         // Calcular total de personas con menú vegetariano/vegano
-        totalPeople = usersData
+        totalVegetarianMenu = usersData
           .filter((user) => user.asistira?.toLowerCase() === "sí")
           .reduce((sum, user) => {
             const cantidadVegetariano = parseInt(user.menuVegetariano || "0", 10);
@@ -61,10 +71,10 @@ export default function DashboardAdmin() {
       }
 
       setStats({
-        totalUsers,
-        attendingUsers: attending,
-        notAttendingUsers: notAttending,
-        totalPeople,
+        totalUsers: totalConfirmations,
+        attendingUsers: totalPeopleAttending,
+        notAttendingUsers: totalPeopleNotAttending,
+        totalPeople: totalVegetarianMenu,
         totalSongs,
       });
     } catch (error) {
@@ -175,10 +185,10 @@ export default function DashboardAdmin() {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">
-                  Total Invitados
+                  Total Confirmaciones
                 </p>
                 <p className="text-2xl font-semibold text-gray-900">
-                  150
+                  {stats.totalUsers}
                 </p>
               </div>
             </div>
@@ -202,7 +212,7 @@ export default function DashboardAdmin() {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Confirmados</p>
+                <p className="text-sm font-medium text-gray-600">Total Personas Asistentes</p>
                 <p className="text-2xl font-semibold text-gray-900">
                   {stats.attendingUsers}
                 </p>
