@@ -3,10 +3,10 @@ import { Instagram } from "lucide-react";
 
 export default function PhotosShare() {
   return (
-    <div className="relative w-full mx-auto px-4 py-12 h-screen flex flex-col items-center justify-center text-center">
+    <div className="relative w-full mx-auto px-4 py-12 h-screen flex flex-col items-center justify-center text-center bg-black">
       <div className="absolute inset-0">
         <Image
-          src="/pareja6.jpg"
+          src="/fondo-button-page.jpeg"
           alt="Fondo romántico"
           fill
           className="object-cover object-center brightness-75"
@@ -37,17 +37,6 @@ export default function PhotosShare() {
           <p className="text-xl md:text-2xl font-semibold bg-white text-[#8B6F6F] px-4 py-1 rounded-md">
             #MicaIvan2025
           </p>
-        </div>
-
-        <div className="pt-16">
-          <a
-            href="https://www.instagram.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-[#D49090] text-white px-6 py-3 rounded-full text-lg font-semibold shadow-lg hover:bg-[#BA7A7A] transition-all"
-          >
-            Ver en Instagram
-          </a>
         </div>
       </div>
     </div>

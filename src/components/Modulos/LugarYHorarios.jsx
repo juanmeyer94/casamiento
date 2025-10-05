@@ -36,20 +36,24 @@ export default function GeneralInfo() {
 
   const isInView = useInView(ref, { once: true, threshold: 0.3 });
   const titleInView = useInView(titleRef, { once: true, threshold: 0.3 });
-  const infoCardsInView = useInView(infoCardsRef, { once: true, threshold: 0.3 });
+  const infoCardsInView = useInView(infoCardsRef, {
+    once: true,
+    threshold: 0.3,
+  });
 
   const agendarCelebracion = () => {
     const title = encodeURIComponent("Casamiento de Mica y Ivan");
     const details = encodeURIComponent(
-      "¡Acompañanos a celebrar este día tan especial!",
+      "¡Acompañanos a celebrar este día tan especial!"
     );
     const location = encodeURIComponent(
-      "Establecimiento Las Marías, Rafaela, Santa Fe",
+      "Establecimiento Las Marías, Rafaela, Santa Fe"
     );
-    const startDate = "20251108T230000Z";
-    const endDate = "20251109T030000Z";
-    const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}`
-    + `&details=${details}&location=${location}&dates=${startDate}/${endDate}`;
+    const startDate = "20251108T210000Z";
+    const endDate = "20251109T080000Z";
+    const calendarUrl =
+      `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}` +
+      `&details=${details}&location=${location}&dates=${startDate}/${endDate}`;
     window.open(calendarUrl, "_blank");
   };
 
@@ -135,7 +139,9 @@ export default function GeneralInfo() {
         <motion.div
           className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
           initial={{ opacity: 0, scale: 0 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+          animate={
+            isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }
+          }
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           <div className="w-44 h-44 bg-white rounded-full shadow-md flex items-center justify-center p-2">
@@ -201,12 +207,14 @@ export default function GeneralInfo() {
           <h2
             className={`${cormorant.className} text-[#000000] text-2xl font-semibold mb-2`}
           >
-            LUGAR
+            ASISTENCIA
           </h2>
           <p
             className={`${cormorant.className} text-[#2e2c2b] text-xl font-medium mb-4`}
           >
-            Ruta Nacional 34 - Rafaela
+            Por favor, confirma tu asistencia antes del
+            <br />
+            20 de octubre.
           </p>
           <button
             onClick={handleModal}
@@ -297,12 +305,12 @@ export default function GeneralInfo() {
       )}
       <Modal open={open} onClose={() => setOpen(false)}>
         <h2 className="text-xl font-semibold mb-2">Confirmar asistencia</h2>
-        <p>
-          Hola! Nos alegra que hayas entrado a nuestra página 😀
-        </p>
+        <p>Hola! Nos alegra que hayas entrado a nuestra página 😀</p>
 
         <div className="mb-3">
-          <label className="block text-sm font-medium" htmlFor="attending">¿Vas a venir?</label>
+          <label className="block text-sm font-medium" htmlFor="attending">
+            ¿Vas a venir?
+          </label>
           <select
             id="attending"
             value={attending}
@@ -337,14 +345,18 @@ export default function GeneralInfo() {
               <option value="10">10 personas</option>
             </select>
             <p className="text-xs text-gray-600 mt-1">
-              Ejemplo: Si vienes con tu pareja e hijo, selecciona &quot;3 personas&quot;
+              Ejemplo: Si vienes con tu pareja e hijo, selecciona &quot;3
+              personas&quot;
             </p>
           </div>
         )}
 
         {attending === "Sí" && (
           <div className="mb-3">
-            <label className="block text-sm font-medium" htmlFor="vegetarianMenu">
+            <label
+              className="block text-sm font-medium"
+              htmlFor="vegetarianMenu"
+            >
               ¿Cuántas personas necesitan menú vegetariano/vegano?
             </label>
             <select
@@ -366,7 +378,8 @@ export default function GeneralInfo() {
               <option value="10">10 personas</option>
             </select>
             <p className="text-xs text-gray-600 mt-1">
-              Selecciona cuántas personas de tu grupo necesitan menú vegetariano o vegano
+              Selecciona cuántas personas de tu grupo necesitan menú vegetariano
+              o vegano
             </p>
           </div>
         )}

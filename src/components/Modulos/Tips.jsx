@@ -171,8 +171,22 @@ export default function Tips() {
             </div>
             <h3 className="text-[#8B6F6F] text-xl mt-8 mb-4">Tips y Notas</h3>
             <div className="space-y-4 text-[#8B6F67]">
-              <h3 className="font-medium">Ubicación:</h3>
-              <p>El lugar cuenta con estacionamiento gratuito.</p>
+              <h3 className="font-medium">Informacion importante:</h3>
+              <p>
+                El lugar cuenta con 7 habitaciones para alojar a los invitados.
+              </p>
+              <p>
+                Se puede alojar en el lugar o en el hotel cercano (
+                <a
+                  href="https://google.com/maps/dir//campo+alegre+rafaela/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x95caae25b114dd5b:0xca51049ae622ed81?sa=X&ved=1t:155782&ictx=111"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#402ff9] hover:text-[#C4A494] underline transition-colors"
+                >
+                  Campo Alegre
+                </a>
+                ).
+              </p>
               <h3 className="font-medium">Clima:</h3>
               <p>
                 La ceremonia y recepción serán al aire libre. Se recomienda

@@ -142,8 +142,9 @@ export default function AltaParty() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 0.6, delay: 0.8 }}
         >
-          Hagamos juntos una fiesta épica. Aquí algunos detalles a tener en
-          cuenta.
+          Hagamos juntos una fiesta increible.
+          <br />
+          Aquí algunos detalles a tener en cuenta.
         </motion.p>
       </motion.div>
 
@@ -230,7 +231,8 @@ export default function AltaParty() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
           >
-            🎶 ¡Ayúdanos a armar la playlist más épica de la fiesta! ¿Qué canción no puede faltar?
+            🎶 ¡Ayúdanos a armar la playlist más épica de la fiesta! ¿Qué
+            canción no puede faltar?
           </motion.p>
 
           <motion.button

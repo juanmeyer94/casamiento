@@ -217,7 +217,7 @@ export default function Precio() {
               </div>
               <div className="bg-green-50 p-4 rounded-lg border border-green-200">
                 <h3 className="font-medium text-green-800 mb-2">
-                  💰 Precio para niños:
+                  💰 Precio para niños (2 a 12 años):
                 </h3>
                 <p className="text-2xl font-bold text-green-600">$45.000 ARS</p>
               </div>
