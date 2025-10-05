@@ -8,6 +8,10 @@ export default function DashboardAdmin() {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("users");
+  const [filters, setFilters] = useState({
+    attendance: "all", // "all", "attending", "notAttending"
+    vegetarian: "all", // "all", "vegetarian", "notVegetarian"
+  });
   const [stats, setStats] = useState({
     totalUsers: 0,
     attendingUsers: 0,
@@ -136,6 +140,27 @@ export default function DashboardAdmin() {
       return dateString;
     }
   };
+
+  // Función para filtrar usuarios
+  const getFilteredUsers = () => {
+    if (!Array.isArray(users)) return [];
+
+    return users.filter((user) => {
+      // Filtro por asistencia
+      const attendanceMatch = filters.attendance === "all"
+        || (filters.attendance === "attending" && user.asistira?.toLowerCase() === "sí")
+        || (filters.attendance === "notAttending" && user.asistira?.toLowerCase() === "no");
+
+      // Filtro por menú vegetariano (solo aplica a los que asisten)
+      const vegetarianMatch = filters.vegetarian === "all"
+        || (filters.vegetarian === "vegetarian" && user.asistira?.toLowerCase() === "sí" && parseInt(user.menuVegetariano || "0", 10) > 0)
+        || (filters.vegetarian === "notVegetarian" && user.asistira?.toLowerCase() === "sí" && parseInt(user.menuVegetariano || "0", 10) === 0);
+
+      return attendanceMatch && vegetarianMatch;
+    });
+  };
+
+  const filteredUsers = getFilteredUsers();
 
   if (loading) {
     return (
@@ -332,100 +357,162 @@ export default function DashboardAdmin() {
           </div>
 
           <div className="p-6">
-            {activeTab === "users"
-              && (
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[1200px] divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Fecha
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Nombre
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Email
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Asiste
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px]">
-                        Cantidad
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            {activeTab === "users" && (
+              <div>
+                {/* Filtros */}
+                <div className="mb-6 bg-gray-50 p-4 rounded-lg">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Filtros</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="attendanceFilter" className="block text-sm font-medium text-gray-700 mb-2">
+                        Asistencia
+                      </label>
+                      <select
+                        id="attendanceFilter"
+                        value={filters.attendance}
+                        onChange={(e) => setFilters({ ...filters, attendance: e.target.value })}
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500"
+                      >
+                        <option value="all">Todos</option>
+                        <option value="attending">Solo asistentes</option>
+                        <option value="notAttending">Solo no asistentes</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label htmlFor="vegetarianFilter" className="block text-sm font-medium text-gray-700 mb-2">
                         Menú Vegetariano
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[200px]">
-                        Comentarios
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {Array.isArray(users)
-                      && users.map((user) => (
-                        <tr key={`${user.email}-${user.marcaTemporal}`} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {formatDate(user.marcaTemporal)}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {user.nombreCompleto}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {user.email}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span
-                              className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                user.asistira?.toLowerCase() === "sí"
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-red-100 text-red-800"
-                              }`}
-                            >
-                              {user.asistira || "Sin respuesta"}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-900 min-w-[150px]">
-                            {user.asistira?.toLowerCase() === "sí" ? (
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                {user.cantidadPersonas || "1"}
-                                {user.cantidadPersonas === "1" ? "persona" : "personas"}
+                      </label>
+                      <select
+                        id="vegetarianFilter"
+                        value={filters.vegetarian}
+                        onChange={(e) => setFilters({ ...filters, vegetarian: e.target.value })}
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500"
+                      >
+                        <option value="all">Todos</option>
+                        <option value="vegetarian">Solo vegetarianos/veganos</option>
+                        <option value="notVegetarian">Solo menú normal</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex justify-between items-center">
+                    <p className="text-sm text-gray-600">
+                      Mostrando
+                      {" "}
+                      {filteredUsers.length}
+                      {" "}
+                      de
+                      {" "}
+                      {users.length}
+                      {" "}
+                      confirmaciones
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setFilters({ attendance: "all", vegetarian: "all" })}
+                      className="text-sm text-rose-600 hover:text-rose-800 font-medium"
+                    >
+                      Limpiar filtros
+                    </button>
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[1200px] divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Fecha
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Nombre
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Email
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Asiste
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px]">
+                          Cantidad
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Menú Vegetariano
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[200px]">
+                          Comentarios
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {Array.isArray(filteredUsers)
+                        && filteredUsers.map((user) => (
+                          <tr key={`${user.email}-${user.marcaTemporal}`} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {formatDate(user.marcaTemporal)}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {user.nombreCompleto}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {user.email}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span
+                                className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                  user.asistira?.toLowerCase() === "sí"
+                                    ? "bg-green-100 text-green-800"
+                                    : "bg-red-100 text-red-800"
+                                }`}
+                              >
+                                {user.asistira || "Sin respuesta"}
                               </span>
-                            ) : (
-                              <span className="text-gray-400">-</span>
-                            )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {user.asistira?.toLowerCase() === "sí" && (
-                              parseInt(user.menuVegetariano || "0", 10) > 0 ? (
-                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                  {user.menuVegetariano}
-                                  {user.menuVegetariano === "1" ? " persona" : " personas"}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-900 min-w-[150px]">
+                              {user.asistira?.toLowerCase() === "sí" ? (
+                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                  {user.cantidadPersonas || "1"}
+                                  {user.cantidadPersonas === "1" ? "persona" : "personas"}
                                 </span>
                               ) : (
-                                <span className="text-gray-400">Menú normal</span>
-                              )
-                            )}
-                            {user.asistira?.toLowerCase() !== "sí" && (
-                              <span className="text-gray-400">-</span>
-                            )}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-900 min-w-[200px] max-w-md">
-                            <div className="break-words">
-                              {user.comentarios || "-"}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-                {(!Array.isArray(users) || users.length === 0) && (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">No hay confirmaciones aún</p>
-                  </div>
-                )}
+                                <span className="text-gray-400">-</span>
+                              )}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {user.asistira?.toLowerCase() === "sí" && (
+                                parseInt(user.menuVegetariano || "0", 10) > 0 ? (
+                                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    {user.menuVegetariano}
+                                    {user.menuVegetariano === "1" ? " persona" : " personas"}
+                                  </span>
+                                ) : (
+                                  <span className="text-gray-400">Menú normal</span>
+                                )
+                              )}
+                              {user.asistira?.toLowerCase() !== "sí" && (
+                                <span className="text-gray-400">-</span>
+                              )}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-900 min-w-[200px] max-w-md">
+                              <div className="break-words">
+                                {user.comentarios || "-"}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                  {(!Array.isArray(filteredUsers) || filteredUsers.length === 0) && (
+                    <div className="text-center py-8">
+                      <p className="text-gray-500">
+                        {Array.isArray(users) && users.length > 0
+                          ? "No hay resultados que coincidan con los filtros aplicados"
+                          : "No hay confirmaciones aún"}
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
-              )}
+            )}
 
             {activeTab === "songs" && (
               <div className="overflow-x-auto">
