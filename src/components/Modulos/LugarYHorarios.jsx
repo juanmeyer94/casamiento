@@ -44,16 +44,15 @@ export default function GeneralInfo() {
   const agendarCelebracion = () => {
     const title = encodeURIComponent("Casamiento de Mica y Ivan");
     const details = encodeURIComponent(
-      "¡Acompañanos a celebrar este día tan especial!"
+      "¡Acompañanos a celebrar este día tan especial!",
     );
     const location = encodeURIComponent(
-      "Establecimiento Las Marías, Rafaela, Santa Fe"
+      "Establecimiento Las Marías, Rafaela, Santa Fe",
     );
     const startDate = "20251108T210000Z";
     const endDate = "20251109T080000Z";
-    const calendarUrl =
-      `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}` +
-      `&details=${details}&location=${location}&dates=${startDate}/${endDate}`;
+    const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}`
+      + `&details=${details}&location=${location}&dates=${startDate}/${endDate}`;
     window.open(calendarUrl, "_blank");
   };
 
